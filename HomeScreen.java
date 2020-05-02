@@ -16,7 +16,7 @@ public class HomeScreen extends PhonePreset{
    
     // Create home screen buttons
     private JButton[] buttons = new JButton[4];
-    private JButton clock;
+    private JButton clock = new JButton();
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -44,9 +44,8 @@ public class HomeScreen extends PhonePreset{
         String time = timeFormat.format(now);
 
         // Clock
-        clock = new JButton(time);
+        clock.setText(time);
        
-
         clock.setFont(new Font("Raleway", Font.PLAIN, 72));
         clock.setForeground(Color.WHITE);
         clock.setBounds(23, 125, 235, 105);
