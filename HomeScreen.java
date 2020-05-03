@@ -1,5 +1,4 @@
 import java.awt.Graphics;
-import java.awt.GraphicsEnvironment;
 import java.awt.Color;
 import java.awt.Font;
 
@@ -7,7 +6,6 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.Icon;
 
-import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
@@ -20,21 +18,12 @@ public class HomeScreen extends PhonePreset{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-
-        // Create font
-        try{
-            Font f = Font.createFont(Font.TRUETYPE_FONT, new File("./fonts/Raleway-Regular.ttf"));
-            GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(f);
-        }catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-
         
         // Set layout -- remove all existing layouts
         setLayout(null);
 
         // Create mat for clock to on
-        g.setColor(new Color(82, 97, 107, 105)); // rgba , a => transparency(alpha)
+        g.setColor(new Color(82, 97, 107, 160)); // rgba , a => transparency(alpha)
         g.fillRoundRect(23, 135, 235, 100, 30, 30);
 
         // Get system time
@@ -57,7 +46,6 @@ public class HomeScreen extends PhonePreset{
         add(clock);
         
         // Create mat for icons to lie on
-        // g.setColor(new Color(82, 97, 107, 105)); // rgba , a => transparency(alpha)
         g.setColor(new Color(23, 31, 42, 160)); // rgba , a => transparency(alpha)
         g.fillRoundRect(23, 471, 235, 60, 30, 30);
 
