@@ -1,16 +1,12 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 import javax.imageio.ImageIO;
-
 import java.io.File;
 
 
-public class PhonePreset extends JPanel{
+public class PhonePreset extends PhonePresetWithNoWallpaper{
     // Define custom colors
-    private Color BACKGROUND = new Color(0x0779E4);
+    private Color BACKGROUND = new Color(0xEB6383);
     private Color BUBBLE3 = new Color(239, 243, 198, 70);
     private Color BUBBLE2 = new Color(239, 243, 198, 140);
     private Color BUBBLE1 = new Color(239, 243, 198, 160);
@@ -58,6 +54,5 @@ public class PhonePreset extends JPanel{
         // Draw iphone image on panel
         g.drawImage(iphone, 0, 0, width, height, this);
 
-        // System.out.println("Width: "+width+" Height: "+height);
     }
 }

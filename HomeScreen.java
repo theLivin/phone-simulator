@@ -1,20 +1,23 @@
-import java.awt.Graphics;
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.Icon;
-
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
 
 
-public class HomeScreen extends PhonePreset{
-   
+public class HomeScreen extends PhonePreset implements ActionListener{
+
     // Create home screen buttons
     private JButton[] buttons = new JButton[4];
     private JButton clock = new JButton();
+    private JButton smallClock = new JButton();
+
+    // Load image files
+    Icon phone = new ImageIcon(getClass().getResource("./images/icons/phone.png"));
+    Icon contacts = new ImageIcon(getClass().getResource("./images/icons/contacts.png"));
+    Icon calendar = new ImageIcon(getClass().getResource("./images/icons/calendar.png"));
+    Icon messages = new ImageIcon(getClass().getResource("./images/icons/messages.png"));
+
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -54,12 +57,7 @@ public class HomeScreen extends PhonePreset{
         for(int i=0; i<buttons.length; i++)
             buttons[i] = new JButton();
         
-        // - load image files
-        Icon phone = new ImageIcon(getClass().getResource("./images/icons/phone.png"));
-        Icon contacts = new ImageIcon(getClass().getResource("./images/icons/contacts.png"));
-        Icon calendar = new ImageIcon(getClass().getResource("./images/icons/calendar.png"));
-        Icon messages = new ImageIcon(getClass().getResource("./images/icons/messages.png"));
-
+        
         // - put icons in an array
         Icon[] icons = {phone, contacts, calendar, messages};
 
@@ -84,8 +82,54 @@ public class HomeScreen extends PhonePreset{
         for(int i=0; i<buttons.length; i++){
             buttons[i].setBounds(btnX, btnY, btnW, btnH);
             add(buttons[i]);
+
+            // -- register listeners for buttons
+            buttons[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+                    handleButtonClick((JButton)e.getSource());
+                }
+            });
+
             btnX += btnW;
         }
+
+        clock.addActionListener(this);
         
+    }
+
+    // Handle clock click
+    public void actionPerformed(ActionEvent e){
+        System.out.println("clock");
+    }
+
+    // Handle icon clicks
+    public void handleButtonClick(JButton src){
+        
+        if( src.getIcon() == phone ){
+            System.out.println("phone");
+            // Go to phone dialing page
+            // code...
+        }
+
+        if( src.getIcon() == contacts ){
+            System.out.println("contacts");
+            // Go to contacs page
+            ContactsPage panel = new ContactsPage();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+
+        if( src.getIcon() == calendar ){
+            System.out.println("calendar");
+            // Go to calendar page
+            // code...
+        }
+
+        if( src.getIcon() == messages ){
+            System.out.println("messages");
+            // Go to messages page
+            // code...
+        }
     }
 }

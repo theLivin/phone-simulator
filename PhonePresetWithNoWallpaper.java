@@ -1,9 +1,7 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
 import javax.swing.*;
 import javax.imageio.ImageIO;
-
 import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
@@ -47,7 +45,6 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         Dimension size = clock.getPreferredSize();
         
         clock.setFont(new Font("Raleway", Font.PLAIN, 12));
-        // clock.setForeground(FOREGROUND);
         clock.setBounds(0, 12, 100, size.height);
 
         // -- make clock button transparent
@@ -55,7 +52,6 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         clock.setContentAreaFilled(false);
         clock.setBorderPainted(false);
         add(clock);
-
        
         // Draw iphone image on panel
         g.drawImage(iphone, 0, 0, width, height, this);

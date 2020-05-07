@@ -1,12 +1,8 @@
-import java.awt.Font;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.JFrame;
-
+import java.awt.*;
+import javax.swing.*;
 import java.io.File;
 
 public class PhoneSimulator{
-
     public static void main(String[] args){
         // Create font
         try{
@@ -18,15 +14,13 @@ public class PhoneSimulator{
 
         JFrame application = new JFrame("eyePhone");
         HomeScreen home = new HomeScreen();
-        ContactsPage contactsPage = new ContactsPage();
 
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(287, 590);
         application.setVisible(true);
         application.setResizable(false);
         application.setLocationRelativeTo(null);
-        // application.add(home);
-        application.add(contactsPage);
+        application.add(home);
         
     }
 }
