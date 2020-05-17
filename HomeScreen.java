@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
@@ -65,7 +66,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         for( int i=0; i<buttons.length; i++)
             buttons[i].setIcon(icons[i]);
         
-        // - make buttons baground transparent
+        // - make buttons background transparent
         for( int i=0; i<buttons.length; i++){
             buttons[i].setOpaque(false);
             buttons[i].setContentAreaFilled(false);
@@ -106,7 +107,10 @@ public class HomeScreen extends PhonePreset implements ActionListener{
     public void handleButtonClick(JButton src){
         
         if( src.getIcon() == phone ){
-            System.out.println("phone");
+            PhoneDial panel = new PhoneDial();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
             // Go to phone dialing page
             // code...
         }
@@ -132,4 +136,5 @@ public class HomeScreen extends PhonePreset implements ActionListener{
             // code...
         }
     }
+
 }
