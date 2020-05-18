@@ -5,12 +5,11 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 
-public class AddContact extends PhonePresetWithNoWallpaper implements ActionListener {
+public class AddContact extends PhonePresetWithNoWallpaper implements ActionListener {	
+	private static final Font font = new Font("Raleway", Font.PLAIN, 14);
+    private JButton contactsBtn = new JButton("Contacts");
+	private JButton backBtn = new JButton("Back");
 
-	
-	/**
-	 * 
-	 */
 
 	public AddContact(String Param) {
 		JLabel headText = new JLabel("Add New Contact");
@@ -60,67 +59,48 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		btnDiscard.setBounds(28, 292, 89, 23);
 		add(btnDiscard);
 		
-		
-		ImageIcon imgOptions = new ImageIcon(getClass().getResource("./img/options.png"));
-		JButton optionsBtn = new JButton(imgOptions);
-		optionsBtn.setBorder(null);
-		optionsBtn.setBounds(53, 515, 39, 30);
-		add(optionsBtn);
-		
-		ImageIcon imgHome = new ImageIcon(getClass().getResource("./img/homeButton.png"));
-		JButton homeBtn = new JButton(imgHome);
-		homeBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 HomeScreen panel = new HomeScreen();
-		           NewWindowFrame frame = new NewWindowFrame(panel);
-		           frame.setVisible(true);
-			}
-		});
-		homeBtn.setBorder(null);
-		homeBtn.setBounds(128, 515, 22, 26);
-		add(homeBtn);
-		
-		ImageIcon imgBack = new ImageIcon(getClass().getResource("./img/back.png"));
-		JButton backBtn = new JButton(imgBack);
-		backBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PhoneDial panel = new PhoneDial();
-		         NewWindowFrame frame = new NewWindowFrame(panel);
-		         frame.setVisible(true);
-		          
-			}
-		});
-		backBtn.setBorder(null);
-		backBtn.setBounds(198, 515, 28, 26);
-		add(backBtn);
-	}
-	
-	public static void main(String[] args) {
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					 JFrame app = new JFrame();
-				     String Param = null;
-					AddContact interFace = new AddContact( Param);
+		// contacts Button
+        contactsBtn.setFont(font);
+        contactsBtn.setForeground(Color.BLUE);
+        contactsBtn.setBounds(170, 60, 100, 20);
+        contactsBtn.setHorizontalAlignment(SwingConstants.RIGHT);
+        makeButtonTransparent(contactsBtn, false);
+        add(contactsBtn);
+        contactsBtn.addActionListener(this);
 
-				        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				        app.setSize(287, 590);
-				        app.setVisible(true);
-				        app.setResizable(false);
-				        app.setLocationRelativeTo(null);
-				        app.getContentPane().add(interFace);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		// back Button
+        backBtn.setFont(font);
+        backBtn.setForeground(Color.BLUE);
+        backBtn.setBounds(7, 60, 80, 20);
+        backBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        makeButtonTransparent(backBtn, false);
+        add(backBtn);
+        backBtn.addActionListener(this);
+
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		// TODO Auto-generated method stub
-	//	numTextField.getText();
+		if (e.getSource() == backBtn){
+			// --go to home screen
+            PhoneDial panel = new PhoneDial();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+            
+        }
+        if (e.getSource() == contactsBtn){
+			// -- go to contacts page
+            ContactsPage panel = new ContactsPage();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
 	}
+
+	// Make a button transparent
+    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(visibleBorder);
+    }// <-- end makeButtonTransparent
 }

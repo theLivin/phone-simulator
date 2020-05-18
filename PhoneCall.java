@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 
 public class PhoneCall extends PhonePresetWithNoWallpaper {
-
 	
 	public PhoneCall( String Param) {
 		ImageIcon imgContactImage = new ImageIcon(getClass().getResource("./img/contactImage.png"));
@@ -18,23 +17,21 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		endCall.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PhoneDial panel = new PhoneDial();
-		           NewWindowFrame frame = new NewWindowFrame(panel);
-		           frame.setVisible(true);
+				endCall();
 			}
 		});
 		endCall.setBounds(115, 470, 56, 60);
 		add(endCall);
 		
 		JLabel contactName = new JLabel("Name Of Contact ");
-		contactName.setFont(new Font("Tahoma", Font.BOLD, 20));
+		contactName.setFont(new Font("Raleway", Font.BOLD, 20));
 		contactName.setToolTipText("");
 		contactName.setBounds(47, 87, 177, 38);
 		add(contactName);
 		
 		JLabel phoneNum = new JLabel();
 		phoneNum.setText(Param);
-		phoneNum.setFont(new Font("Tahoma", Font.BOLD, 16));
+		phoneNum.setFont(new Font("Raleway", Font.BOLD, 16));
 		phoneNum.setBounds(70, 122, 120, 20);
 		add(phoneNum);
 		
@@ -51,34 +48,14 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		JLabel lblMtnGhana = new JLabel("MTN Ghana");
 		lblMtnGhana.setBounds(105, 150, 70, 14);
 		add(lblMtnGhana);
-	
-	
-	
-	
+		
 	}
 
-	
-	public static void main(String[] args) {
-	
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					String Param = null;
-					 JFrame app = new JFrame();
-				       PhoneCall dial = new PhoneCall( Param);
-
-				        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				        app.setSize(287, 590);
-				        app.setVisible(true);
-				        app.setResizable(false);
-				        app.setLocationRelativeTo(null);
-				        app.getContentPane().add(dial);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	public void endCall(){
+		PhoneDial panel = new PhoneDial();
+		NewWindowFrame frame = new NewWindowFrame(panel);
+		frame.setVisible(true);
+		((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
 	}
-
 
 }

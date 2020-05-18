@@ -10,6 +10,10 @@ import java.awt.Font;
 
 public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListener {
 	private JTextField textField;
+	
+	private static final Font font = new Font("Raleway", Font.PLAIN, 14);
+    private JButton contactsBtn = new JButton("Contacts");
+	private JButton backBtn = new JButton("Back");
 
 	/**
 	 * Create the panel.
@@ -18,194 +22,91 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		setBounds(new Rectangle(0, 0, 281, 561));
 		setBackground(Color.WHITE);
 		setLayout(null);
-	        
-		
-		ImageIcon imgBton1 = new ImageIcon(getClass().getResource("./img/btn1.png"));
-		JLabel bton1 = new JLabel(imgBton1);
-		bton1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"1");
+
+		ImageIcon icon;
+		JButton[] numpads = new JButton[13];
+		int x = 37, y = 201, w = 61, h = 52;
+		int xi = 37;
+
+		// Add text numpads
+		for(int i=1; i<=12; i++){
+			if(i>=10 && i<=12){
+				switch(i){
+					case 10:
+					icon = new ImageIcon(getClass().getResource("./img/btnStar.png"));
+					break;
+					case 11:
+					icon = new ImageIcon(getClass().getResource("./img/btn0.png"));
+					break;
+					default:
+					icon = new ImageIcon(getClass().getResource("./img/btnHash.png"));
+				}
+			}else{
+				icon = new ImageIcon(getClass().getResource("./img/btn"+i+".png"));
 			}
-		});
-		bton1.setBounds(37, 201, 61, 52);
-		add(bton1);
-		
-		ImageIcon imgBton2 = new ImageIcon(getClass().getResource("./img/btn2.png"));
-		JLabel bton2 = new JLabel(imgBton2);
-		bton2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"2");
+
+			numpads[i] = new JButton("",icon);
+			numpads[i].setBounds(x, y, w, h);
+			add(numpads[i]);
+			// -- register listeners for buttons
+            numpads[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+					String key = handleButtonClick((JButton)e.getSource());
+					textField.setText(textField.getText()+key);;
+                }
+            });
+
+			if(i%3==0){
+				x = xi;
+				y = y+h+2;
+			}else{
+				x = x+w+2;
 			}
-		});
-		bton2.setBounds(108, 201, 61, 52);
-		add(bton2);
-		
-		ImageIcon imgBton3 = new ImageIcon(getClass().getResource("./img/btn3.png"));
-		JLabel bton3 = new JLabel(imgBton3);
-		bton3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"3");
-			}
-		});
-		bton3.setBounds(181, 201, 61, 52);
-	    add(bton3);
-		
-	    ImageIcon imgBton4 = new ImageIcon(getClass().getResource("./img/btn4.png"));
-		JLabel bton4 = new JLabel(imgBton4);
-		bton4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"4");
-			}
-		});
-		bton4.setBounds(37, 258, 61, 59);
-		add(bton4);
-		
-		ImageIcon imgBton5 = new ImageIcon(getClass().getResource("./img/btn5.png"));
-		JLabel bton5 = new JLabel(imgBton5);
-		bton5.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"5");
-			}
-		});
-		bton5.setBounds(108, 263, 61, 52);
-		add(bton5);
-		
-		ImageIcon imgBton6 = new ImageIcon(getClass().getResource("./img/btn6.png"));
-		JLabel bton6 = new JLabel(imgBton6);
-		bton6.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"6");
-			}
-		});
-		bton6.setBounds(181, 263, 61, 52);
-		add(bton6);
-		
-		ImageIcon imgBton7 = new ImageIcon(getClass().getResource("./img/btn7.png"));
-		JLabel bton7 = new JLabel(imgBton7);
-		bton7.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			    textField.setText(textField.getText()+"7");
-			}
-		});
-		bton7.setBounds(37, 326, 61, 59);
-		add(bton7);
-		
-		ImageIcon imgBton8 = new ImageIcon(getClass().getResource("./img/btn8.png"));
-		JLabel bton8 = new JLabel(imgBton8);
-		bton8.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"8");
-			}
-		});
-		bton8.setBounds(108, 326, 61, 59);
-		add(bton8);
-		
-		ImageIcon imgBton9 = new ImageIcon(getClass().getResource("./img/btn9.png"));
-		JLabel bton9 = new JLabel(imgBton9);
-		bton9.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				 textField.setText(textField.getText()+"9");
-			}
-		});
-		bton9.setBounds(181, 326, 61, 59);
-	    add(bton9);
-		
-	    ImageIcon imgBtonStar = new ImageIcon(getClass().getResource("./img/btnStar..png"));
-		JLabel btonStar = new JLabel(imgBtonStar);
-		btonStar.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"*");
-			}
-		});
-		btonStar.setBounds(37,389, 61, 59);
-		add(btonStar);
-		
-		ImageIcon imgBton0 = new ImageIcon(getClass().getResource("./img/btn0.png"));
-		JLabel bton0 = new JLabel(imgBton0);
-		bton0.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				 textField.setText(textField.getText()+"0");
-			}
-		});
-		bton0.setBounds(108, 389, 61, 59);
-		add(bton0);
-		
-		ImageIcon imgBtonHash = new ImageIcon(getClass().getResource("./img/btnHash.png"));
-		JLabel btonHash = new JLabel(imgBtonHash);
-		btonHash.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				textField.setText(textField.getText()+"#");
-			}
-		});
-		btonHash.setBounds(181,389, 61, 59);
-		add(btonHash);
-		
+			
+		}
+
+		// Call button		
 		ImageIcon img1 = new ImageIcon(getClass().getResource("./img/callButton.png"));
 		JButton call = new JButton(img1);
 		call.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = textField.getText();
-	             if(msg.contentEquals("")) {
-					
-				}
-				else {
-				PhoneCall panel = new PhoneCall(msg);
-		           NewWindowFrame frame = new NewWindowFrame(panel);
-		           frame.setVisible(true);
-				}
+				handleButtonClick("call", msg);
 			}
 		});
 		call.setBorder(null);
 		call.setBounds(118, 473, 39, 35);
 		add(call);
+
+        // contacts Button
+        contactsBtn.setFont(font);
+        contactsBtn.setForeground(Color.BLUE);
+        contactsBtn.setBounds(170, 60, 100, 20);
+        contactsBtn.setHorizontalAlignment(SwingConstants.RIGHT);
+        makeButtonTransparent(contactsBtn, false);
+        add(contactsBtn);
+        contactsBtn.addActionListener(this);
+
+		// back Button
+        backBtn.setFont(font);
+        backBtn.setForeground(Color.BLUE);
+        backBtn.setBounds(7, 60, 80, 20);
+        backBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        makeButtonTransparent(backBtn, false);
+        add(backBtn);
+        backBtn.addActionListener(this);
+
 		
-		ImageIcon imgOptions = new ImageIcon(getClass().getResource("./img/options.png"));
-		JButton optionsBtn = new JButton(imgOptions);
-		optionsBtn.setBorder(null);
-		optionsBtn.setBounds(53, 515, 39, 30);
-		add(optionsBtn);
-		
-		ImageIcon imgHome = new ImageIcon(getClass().getResource("./img/homeButton.png"));
-		JButton homeBtn = new JButton(imgHome);
-		homeBtn.setBorder(null);
-		homeBtn.setBounds(128, 515, 22, 26);
-		add(homeBtn);
-		
-		ImageIcon imgBack = new ImageIcon(getClass().getResource("./img/back.png"));
-		JButton backBtn = new JButton(imgBack);
-		backBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				  HomeScreen panel = new HomeScreen();
-		           NewWindowFrame frame = new NewWindowFrame(panel);
-		           frame.setVisible(true);
-		          
-			}
-		});
-		backBtn.setBorder(null);
-		backBtn.setBounds(198, 515, 28, 26);
-		add(backBtn);
-		
+		// Textfield		
 		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		textField.setFont(new Font("Raleway", Font.PLAIN, 20));
 		textField.setHorizontalAlignment(SwingConstants.TRAILING);
 		textField.setBorder(null);
 		textField.setBounds(23, 155, 156, 35);
 		add(textField);
 		textField.setColumns(10);
-		
-		
+
+		// Backspace		
 		ImageIcon imgBackSpace = new ImageIcon(getClass().getResource("./img/icons8-backspace-30.png"));
 		JLabel backSpace = new JLabel(imgBackSpace);
 		backSpace.addMouseListener(new MouseAdapter() {
@@ -225,9 +126,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		backSpace.setBounds(181, 155, 46, 46);
 		add(backSpace);
 		
-		
-		
-		
+		// Add contact		
 		ImageIcon imgAddContact1 = new ImageIcon(getClass().getResource("./img/addContact.png"));
 		JButton addContact1 = new JButton(imgAddContact1);
 		addContact1.setBorder(null);
@@ -235,71 +134,121 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String msg = textField.getText();
-				if(msg.contentEquals("")) {
-					
-				}
-				else {
-					AddContact panel = new AddContact(msg);
-			           NewWindowFrame frame = new NewWindowFrame(panel);
-			           frame.setVisible(true);
-				}
-				
+				handleButtonClick("add", msg);				
 			}
 		});
 		addContact1.setBounds(67, 90, 39, 30);
-	    add(addContact1);
+		add(addContact1);
 		
+		// Send message		
 		ImageIcon imgSendMessage1 = new ImageIcon(getClass().getResource("./img/sendMessage.png"));
 		JButton sendMessage1 = new JButton(imgSendMessage1);
 		sendMessage1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = textField.getText();
-				if(msg.contentEquals("")) {
-					
-				}
-				else {
-					SendMessage panel = new SendMessage();
-			           NewWindowFrame frame = new NewWindowFrame(panel);
-			           frame.setVisible(true);
-				}
+				handleButtonClick("message", msg);
 			
 			}
 		});
 		sendMessage1.setBorder(null);
 		sendMessage1.setBounds(166, 85, 46, 35);
 		add(sendMessage1);
-		
-		JLabel lblNewLabel = new JLabel("Add Contact");
-		lblNewLabel.setBounds(53, 120, 61, 14);
-		add(lblNewLabel);
-		
-		JLabel lblT = new JLabel("Send Message");
-		lblT.setBounds(160, 120, 76, 14);
-		add(lblT);
-		
-		
-		
+			
 		
 	}
-	
-	
 
-	public static void main(String[] args) {
-		
-
-		JFrame app = new JFrame("eyePhone");
-	    PhoneDial dial = new PhoneDial();
-		  app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	        app.setSize(287, 590);
-	        app.setVisible(true);
-	        app.setResizable(false);
-	        app.setLocationRelativeTo(null);
-	        app.getContentPane().add(dial);
-	}
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (e.getSource() == backBtn){
+			// --go to home screen
+            HomeScreen panel = new HomeScreen();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+            
+        }
+        if (e.getSource() == contactsBtn){
+			// -- go to contacts page
+            ContactsPage panel = new ContactsPage();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+	}
+
+	// Make a button transparent
+    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(visibleBorder);
+    }// <-- end makeButtonTransparent
+
+	// Handle numpad clicks
+	public String handleButtonClick(JButton btn){
+		Icon[] imgs = new ImageIcon[13];
+		for(int i=1; i<=12; i++){
+			if(i>=10 && i<=12){
+				switch(i){
+					case 10:
+					imgs[i] = new ImageIcon(getClass().getResource("./img/btnStar.png"));
+					break;
+					case 11:
+					imgs[i] = new ImageIcon(getClass().getResource("./img/btn0.png"));
+					break;
+					default:
+					imgs[i] = new ImageIcon(getClass().getResource("./img/btnHash.png"));
+				}
+			}else{
+				imgs[i] = new ImageIcon(getClass().getResource("./img/btn"+i+".png"));
+			}
+		}
+
+		Icon btnIcon = btn.getIcon();
+		String output = "0";
+
+		for(int i=1; i<=12; i++){
+			if(i>=1 && i<=9){
+				if((btnIcon.toString()).compareTo(imgs[i].toString()) == 0)
+					output = (String)(""+i);
+			}else{
+				if((btnIcon.toString()).compareTo(imgs[10].toString()) == 0)
+					output = "*";
+				else if((btnIcon.toString()).compareTo(imgs[11].toString()) == 0)
+					output = "0";
+				else if((btnIcon.toString()).compareTo(imgs[12].toString()) == 0)
+					output = "#";
+			}
+		}
+		return output;
+	}
+
+	// Handle special buttons clicks ie: add contacts, send message, dial
+	public void handleButtonClick(String btn, String msg){
+		System.out.println(msg);
+		if(msg.contentEquals("")) {
+			// do nothing
+		}else{
+			if(btn == "call"){
+				PhoneCall panel = new PhoneCall(msg);
+				NewWindowFrame frame = new NewWindowFrame(panel);
+				frame.setVisible(true);
+				((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+			}
+
+			if(btn == "add"){
+				AddContact panel = new AddContact(msg);
+				NewWindowFrame frame = new NewWindowFrame(panel);
+				frame.setVisible(true);
+				((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+			}
+
+			if(btn == "message"){
+				SendMessage panel = new SendMessage();
+				NewWindowFrame frame = new NewWindowFrame(panel);
+				frame.setVisible(true);
+				((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+				// TODO: let user be able to send message to typed number
+			}			
+
+		}
 	}
 }

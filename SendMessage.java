@@ -1,17 +1,7 @@
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.border.BevelBorder;
-import java.awt.Color;
-import javax.swing.JScrollBar;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 public class SendMessage extends PhonePresetWithNoWallpaper{
 	private JTextField textField;
@@ -19,6 +9,7 @@ public class SendMessage extends PhonePresetWithNoWallpaper{
 	/**
 	 * Create the panel.
 	 */
+
 	public SendMessage() {
 		setAutoscrolls(true);
 		
@@ -67,24 +58,5 @@ public class SendMessage extends PhonePresetWithNoWallpaper{
 		
 
 	}
-public static void main(String[] args) {
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					 JFrame app = new JFrame();
-				    SendMessage interFace = new SendMessage();
-
-				        app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				        app.setSize(287, 590);
-				        app.setVisible(true);
-				        app.setResizable(false);
-				        app.setLocationRelativeTo(null);
-				        app.getContentPane().add(interFace);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 }
