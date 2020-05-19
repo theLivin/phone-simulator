@@ -12,8 +12,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 	private JTextField textField;
 	
 	private static final Font font = new Font("Raleway", Font.PLAIN, 14);
-    private JButton contactsBtn = new JButton("Contacts");
-	private JButton backBtn = new JButton("Back");
+	private JButton homeBtn = new JButton("Home");
 
 	/**
 	 * Create the panel.
@@ -78,23 +77,14 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		call.setBounds(118, 473, 39, 35);
 		add(call);
 
-        // contacts Button
-        contactsBtn.setFont(font);
-        contactsBtn.setForeground(Color.BLUE);
-        contactsBtn.setBounds(170, 60, 100, 20);
-        contactsBtn.setHorizontalAlignment(SwingConstants.RIGHT);
-        makeButtonTransparent(contactsBtn, false);
-        add(contactsBtn);
-        contactsBtn.addActionListener(this);
-
 		// back Button
-        backBtn.setFont(font);
-        backBtn.setForeground(Color.BLUE);
-        backBtn.setBounds(7, 60, 80, 20);
-        backBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        makeButtonTransparent(backBtn, false);
-        add(backBtn);
-        backBtn.addActionListener(this);
+        homeBtn.setFont(font);
+        homeBtn.setForeground(Color.BLUE);
+        homeBtn.setBounds(7, 60, 80, 20);
+        homeBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        makeButtonTransparent(homeBtn, false);
+        add(homeBtn);
+        homeBtn.addActionListener(this);
 
 		
 		// Textfield		
@@ -153,25 +143,49 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		sendMessage1.setBorder(null);
 		sendMessage1.setBounds(166, 85, 46, 35);
 		add(sendMessage1);
-			
+
+
+		addRecAndConTab();			
 		
 	}
 
+	   
+    // Draw buttons at the bottom ie call logs, contacts and dialpad
+    public void addRecAndConTab() {
+    	JLabel recentLabel = new JLabel("New label");
+    	recentLabel.setBounds(62, 489, 34, 34);
+        recentLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/recent.png")));
+        recentLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        recentLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent arg0) {
+                changeCurrentPage("logs");
+            }
+        });
+		add(recentLabel);
+		
+        
+        JLabel contactsLabel = new JLabel("New label");
+        contactsLabel.setBounds(174, 489, 34, 34);
+        contactsLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/contac.png")));
+        contactsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        contactsLabel.addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent arg0) {
+        		changeCurrentPage("contacts");
+        	}
+        });
+        add(contactsLabel);   
+        
+	}
+	
+	// Haddle action event
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == backBtn){
+		if (e.getSource() == homeBtn){
 			// --go to home screen
             HomeScreen panel = new HomeScreen();
             NewWindowFrame frame = new NewWindowFrame(panel);
             frame.setVisible(true);
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
             
-        }
-        if (e.getSource() == contactsBtn){
-			// -- go to contacts page
-            ContactsPage panel = new ContactsPage();
-            NewWindowFrame frame = new NewWindowFrame(panel);
-            frame.setVisible(true);
-            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
 	}
 
@@ -251,4 +265,29 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 
 		}
 	}
+
+	// Change current page
+    public void changeCurrentPage(String target){
+        if(target == "dial"){
+            // go to dial page
+            PhoneDial panel = new PhoneDial();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+        else if(target == "contacts"){
+            // go to contacts page
+            ContactsPage panel = new ContactsPage();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+        else if(target == "logs"){
+            // go to call logs page
+            CallLogs panel = new CallLogs();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+    }
 }
