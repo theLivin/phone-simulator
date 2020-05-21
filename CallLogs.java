@@ -5,6 +5,10 @@ import javax.swing.border.LineBorder;
 
 
 public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListener, KeyListener{
+
+    private static final Font font = new Font("Raleway", Font.PLAIN, 14);
+    private JButton homeBtn = new JButton("Home");
+
     private final JPanel timePanel = new JPanel();
     private final JPanel panel_1 = new JPanel();
     private final JLabel lblToday = new JLabel(" Today");
@@ -23,8 +27,9 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
     public CallLogs(){
         setLayout(null);
         
+		showAllLogs(1);
+        
         addRecAndConTab();
-
 
     }// <-- end Constructor
 
@@ -75,10 +80,9 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         panel_2.add(missedPanel);
         
         JLabel allLabel = new JLabel("All");
-  
         allLabel.setHorizontalAlignment(SwingConstants.CENTER);
         allLabel.setForeground(Color.WHITE);
-        allLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        allLabel.setFont(new Font("Raleway", Font.PLAIN, 15));
         allLabel.setBounds(3, 5, 56, 16);
         allPanel.add(allLabel);
         
@@ -99,7 +103,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         });
         misslabel.setHorizontalAlignment(SwingConstants.CENTER);
         misslabel.setForeground(Color.WHITE);
-        misslabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        misslabel.setFont(new Font("Raleway", Font.PLAIN, 15));
         missedPanel.add(misslabel);
         
         timePanel.setLayout(null);
@@ -113,7 +117,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         panel_1.setBounds(0, 0, 265, 21);
         
         timePanel.add(panel_1);
-        lblToday.setFont(new Font("Tahoma", Font.PLAIN, 14));
+        lblToday.setFont(new Font("Raleway", Font.PLAIN, 14));
         lblToday.setBounds(0, 0, 171, 21);
         
         panel_1.add(lblToday);
@@ -136,13 +140,13 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
             lblNewLabel_2.setBounds(12, 10, 43, 33);
             
             panel_1_1.add(lblNewLabel_2);
-            lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+            lblNewLabel_1_2.setFont(new Font("Raleway", Font.PLAIN, 20));
             lblNewLabel_1_2.setBounds(84, 3, 132, 24);
             
             panel_1_1.add(lblNewLabel_1_2);
             lblNewLabel_1_1_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/missedCall.png")));
             lblNewLabel_1_1_1.setForeground(Color.RED);
-            lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            lblNewLabel_1_1_1.setFont(new Font("Raleway", Font.PLAIN, 16));
             lblNewLabel_1_1_1.setBounds(84, 28, 132, 24);
             
             panel_1_1.add(lblNewLabel_1_1_1);
@@ -162,13 +166,13 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
             lblNewLabel_2_1.setBounds(12, 10, 43, 33);
             
             panel_1_1_1.add(lblNewLabel_2_1);
-            lblNewLabel_1_2_1.setFont(new Font("Tahoma", Font.PLAIN, 20));
+            lblNewLabel_1_2_1.setFont(new Font("Raleway", Font.PLAIN, 20));
             lblNewLabel_1_2_1.setBounds(84, 3, 132, 24);
             
             panel_1_1_1.add(lblNewLabel_1_2_1);
             lblNewLabel_1_1_1_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/callout.png")));
             lblNewLabel_1_1_1_1.setForeground(SystemColor.textHighlight);
-            lblNewLabel_1_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+            lblNewLabel_1_1_1_1.setFont(new Font("Raleway", Font.PLAIN, 16));
             lblNewLabel_1_1_1_1.setBounds(84, 28, 132, 24);
             
             panel_1_1_1.add(lblNewLabel_1_1_1_1);
@@ -206,25 +210,49 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
            lblNewLabel_2.setBounds(12, 10, 43, 33);
            
            panel_1_1.add(lblNewLabel_2);
-           lblNewLabel_1_2.setFont(new Font("Tahoma", Font.PLAIN, 20));
+           lblNewLabel_1_2.setFont(new Font("Raleway", Font.PLAIN, 20));
            lblNewLabel_1_2.setBounds(84, 3, 132, 24);
            
            panel_1_1.add(lblNewLabel_1_2);
            lblNewLabel_1_1_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/missedCall.png")));
            lblNewLabel_1_1_1.setForeground(Color.RED);
-           lblNewLabel_1_1_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+           lblNewLabel_1_1_1.setFont(new Font("Raleway", Font.PLAIN, 16));
            lblNewLabel_1_1_1.setBounds(84, 28, 132, 24);
            
            panel_1_1.add(lblNewLabel_1_1_1);
         }
              
     }
-    
+
+    // Add a home button
+    public void addHomeButton(JPanel pane){
+        // Home Button
+        homeBtn.setFont(font);
+        homeBtn.setForeground(Color.BLUE);
+        homeBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        makeButtonTransparent(homeBtn, false);
+        pane.add(homeBtn);
+        homeBtn.addActionListener(this);
+    }// <-- end addHomeButton
+
+    // Make a button transparent
+    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(visibleBorder);
+    }// <-- end makeButtonTransparent
+
     // Handle ActionListener events
     public void actionPerformed(ActionEvent e){
-        // code...
+        if( e.getSource() == homeBtn ){
+            // Go to home screen
+            HomeScreen panel = new HomeScreen();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+
     }// <-- end actionPerformed    
-    
     
     // Handle KeyListener events
     public void keyTyped(KeyEvent e){
