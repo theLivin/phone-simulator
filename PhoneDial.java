@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,93 +11,62 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 	private JTextField textField;
 	
 	private static final Font font = new Font("Raleway", Font.PLAIN, 14);
-	private JButton homeBtn = new JButton("Home");
+	private JButton homeBtn = new JButton();
+	String dialpadDirectory = "./images/dialpad/";
 
 	/**
 	 * Create the panel.
 	 */
 	public PhoneDial() {
-		setBounds(new Rectangle(0, 0, 281, 561));
-		setBackground(Color.WHITE);
+		// Remove all active layouts
 		setLayout(null);
 
-		ImageIcon icon;
-		JButton[] numpads = new JButton[13];
-		int x = 37, y = 201, w = 61, h = 52;
-		int xi = 37;
+		// Width and height of most buttons
+		int x = 67, y = 40, w = 65, h = 65;
 
-		// Add text numpads
-		for(int i=1; i<=12; i++){
-			if(i>=10 && i<=12){
-				switch(i){
-					case 10:
-					icon = new ImageIcon(getClass().getResource("./img/btnStar.png"));
-					break;
-					case 11:
-					icon = new ImageIcon(getClass().getResource("./img/btn0.png"));
-					break;
-					default:
-					icon = new ImageIcon(getClass().getResource("./img/btnHash.png"));
-				}
-			}else{
-				icon = new ImageIcon(getClass().getResource("./img/btn"+i+".png"));
-			}
-
-			numpads[i] = new JButton("",icon);
-			numpads[i].setBounds(x, y, w, h);
-			add(numpads[i]);
-			// -- register listeners for buttons
-            numpads[i].addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e){
-					String key = handleButtonClick((JButton)e.getSource());
-					textField.setText(textField.getText()+key);;
-                }
-            });
-
-			if(i%3==0){
-				x = xi;
-				y = y+h+2;
-			}else{
-				x = x+w+2;
-			}
-			
-		}
-
-		// Call button		
-		ImageIcon img1 = new ImageIcon(getClass().getResource("./img/callButton.png"));
-		JButton call = new JButton(img1);
-		call.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		// Add contact		
+		ImageIcon imgAddContact1 = new ImageIcon(getClass().getResource("./images/icons/addContact.png"));
+		JButton addContact1 = new JButton(imgAddContact1);
+		addContact1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				String msg = textField.getText();
-				handleButtonClick("call", msg);
+				handleButtonClick("add", msg);				
 			}
 		});
-		call.setBorder(null);
-		call.setBounds(118, 473, 39, 35);
-		add(call);
+		addContact1.setBounds(67, y, w, h);
+		add(addContact1);
+		super.makeButtonTransparent(addContact1, false);
+		
+		// Send message		
+		ImageIcon imgSendMessage1 = new ImageIcon(getClass().getResource("./images/icons/sendMessage.png"));
+		JButton sendMessage1 = new JButton(imgSendMessage1);
+		sendMessage1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String msg = textField.getText();
+				handleButtonClick("message", msg);
+			
+			}
+		});
+		sendMessage1.setBounds(159, y, w, h);
+		add(sendMessage1);
+		super.makeButtonTransparent(sendMessage1, false);
 
-		// back Button
-        homeBtn.setFont(font);
-        homeBtn.setForeground(Color.BLUE);
-        homeBtn.setBounds(7, 60, 80, 20);
-        homeBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        makeButtonTransparent(homeBtn, false);
-        add(homeBtn);
-        homeBtn.addActionListener(this);
-
+		// Change starting y
+		y = y + h + 5;
 		
 		// Textfield		
 		textField = new JTextField();
-		textField.setFont(new Font("Raleway", Font.PLAIN, 20));
+		textField.setFont(new Font("Raleway", Font.PLAIN, 22));
 		textField.setHorizontalAlignment(SwingConstants.TRAILING);
 		textField.setBorder(null);
-		textField.setBounds(23, 155, 156, 35);
+		textField.setBounds(39, y, 156, 35);
 		add(textField);
 		textField.setColumns(10);
 
 		// Backspace		
-		ImageIcon imgBackSpace = new ImageIcon(getClass().getResource("./img/icons8-backspace-30.png"));
-		JLabel backSpace = new JLabel(imgBackSpace);
+		ImageIcon imgBackSpace = new ImageIcon(getClass().getResource("./images/icons/backspace.png"));
+		JButton backSpace = new JButton(imgBackSpace);
 		backSpace.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -113,40 +81,87 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 				}
 			}
 		});
-		backSpace.setBounds(181, 155, 46, 46);
+		backSpace.setBounds(196, y - 7, 46, 46);
+		super.makeButtonTransparent(backSpace, false);
 		add(backSpace);
 		
-		// Add contact		
-		ImageIcon imgAddContact1 = new ImageIcon(getClass().getResource("./img/addContact.png"));
-		JButton addContact1 = new JButton(imgAddContact1);
-		addContact1.setBorder(null);
-		addContact1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				String msg = textField.getText();
-				handleButtonClick("add", msg);				
+
+		// Dial pad
+		ImageIcon icon;
+		JButton[] numpads = new JButton[13];
+		x = 39; y = y + 39;
+		w = 65; h = 65;
+		int xi = 39;
+
+
+		// Add text numpads
+		for(int i=1; i<=12; i++){
+			if(i>=10 && i<=12){
+				switch(i){
+					case 10:
+					icon = new ImageIcon(getClass().getResource(dialpadDirectory + "btnStar.png"));
+					break;
+					case 11:
+					icon = new ImageIcon(getClass().getResource(dialpadDirectory + "btn0.png"));
+					break;
+					default:
+					icon = new ImageIcon(getClass().getResource(dialpadDirectory + "btnHash.png"));
+				}
+			}else{
+				icon = new ImageIcon(getClass().getResource(dialpadDirectory + "btn"+i+".png"));
 			}
-		});
-		addContact1.setBounds(67, 90, 39, 30);
-		add(addContact1);
-		
-		// Send message		
-		ImageIcon imgSendMessage1 = new ImageIcon(getClass().getResource("./img/sendMessage.png"));
-		JButton sendMessage1 = new JButton(imgSendMessage1);
-		sendMessage1.addActionListener(new ActionListener() {
+
+			numpads[i] = new JButton("",icon);
+			numpads[i].setBounds(x, y, w, h);
+			add(numpads[i]);
+			super.makeButtonTransparent(numpads[i], false);
+
+			// -- register listeners for buttons
+            numpads[i].addActionListener(new ActionListener() {
+                public void actionPerformed(ActionEvent e){
+					String key = handleButtonClick((JButton)e.getSource());
+					textField.setText(textField.getText()+key);;
+                }
+            });
+
+			if(i%3==0){
+				x = xi;
+				y = y+h+3;
+			}else{
+				x = x+w+4;
+			}
+			
+		}
+
+		// Change x
+		x = x + w + 4;
+
+		// Call button		
+		ImageIcon img1 = new ImageIcon(getClass().getResource("./images/dialpad/" + "callButton.png"));
+		JButton call = new JButton(img1);
+		call.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String msg = textField.getText();
-				handleButtonClick("message", msg);
-			
+				handleButtonClick("call", msg);
 			}
 		});
-		sendMessage1.setBorder(null);
-		sendMessage1.setBounds(166, 85, 46, 35);
-		add(sendMessage1);
+		call.setBounds(x, y-3, w, h);
+		add(call);
+		super.makeButtonTransparent(call, false);
 
-
+		// Add navigation buttons
 		addRecAndConTab();			
-		
+
+		// Home Button
+		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
+		homeBtn.setIcon(homebar);
+        homeBtn.setForeground(Color.BLUE);
+        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        super.makeButtonTransparent(homeBtn, false);
+        add(homeBtn);
+        homeBtn.addActionListener(this);	
+	
 	}
 
 	   
@@ -165,7 +180,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		
         
         JLabel contactsLabel = new JLabel("New label");
-        contactsLabel.setBounds(174, 489, 34, 34);
+        contactsLabel.setBounds(185, 489, 34, 34);
         contactsLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/contac.png")));
         contactsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         contactsLabel.addMouseListener(new MouseAdapter() {
@@ -189,13 +204,6 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
         }
 	}
 
-	// Make a button transparent
-    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(visibleBorder);
-    }// <-- end makeButtonTransparent
-
 	// Handle numpad clicks
 	public String handleButtonClick(JButton btn){
 		Icon[] imgs = new ImageIcon[13];
@@ -203,16 +211,16 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 			if(i>=10 && i<=12){
 				switch(i){
 					case 10:
-					imgs[i] = new ImageIcon(getClass().getResource("./img/btnStar.png"));
+					imgs[i] = new ImageIcon(getClass().getResource(dialpadDirectory + "btnStar.png"));
 					break;
 					case 11:
-					imgs[i] = new ImageIcon(getClass().getResource("./img/btn0.png"));
+					imgs[i] = new ImageIcon(getClass().getResource(dialpadDirectory + "btn0.png"));
 					break;
 					default:
-					imgs[i] = new ImageIcon(getClass().getResource("./img/btnHash.png"));
+					imgs[i] = new ImageIcon(getClass().getResource(dialpadDirectory + "btnHash.png"));
 				}
 			}else{
-				imgs[i] = new ImageIcon(getClass().getResource("./img/btn"+i+".png"));
+				imgs[i] = new ImageIcon(getClass().getResource(dialpadDirectory + "btn"+i+".png"));
 			}
 		}
 

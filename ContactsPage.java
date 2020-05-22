@@ -9,7 +9,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     private static final Font font = new Font("Raleway", Font.PLAIN, 14);
     private static final Font boldFont = new Font("Raleway", Font.BOLD, 14);
 
-    private JButton homeBtn = new JButton("Home");
+    private JButton homeBtn = new JButton();
     
     private JTextField searchBar = new JTextField("Search Contact", 20);
     private JButton searchBtn = new JButton();
@@ -28,12 +28,16 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         homeBtn.setBounds(7, 60, 80, 20);
        
         // Home Button
-        homeBtn.setFont(font);
+		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
+		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
-        homeBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        makeButtonTransparent(homeBtn, false);
+        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        super.makeButtonTransparent(homeBtn, false);
         add(homeBtn);
-        homeBtn.addActionListener(this);
+        homeBtn.addActionListener(this);	
+	
+        // Search Bar
         searchBar.setBounds(23, 90, 185, 25);
         searchBar.setFont(font);
         add(searchBar);
@@ -41,9 +45,9 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         // Search Button
         Icon searchIcon = new ImageIcon(getClass().getResource("./images/icons/search.png"));
-        searchBtn.setBounds(208, 90, 50, 25);
+        searchBtn.setBounds(203, 85, 50, 30);
         searchBtn.setIcon(searchIcon);
-        makeButtonTransparent(searchBtn, true);
+        super.makeButtonTransparent(searchBtn, false);
         add(searchBtn);
         searchBtn.addActionListener(this);
 
@@ -90,14 +94,6 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         }
 
     }// <-- end showContacts
-
-    // Make a button transparent
-    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(visibleBorder);
-    }// <-- end makeButtonTransparent
-
        
     // Draw buttons at the bottom ie call logs, contacts and dialpad
     public void addRecAndConTab() {
@@ -113,7 +109,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         add(recentLabel);
         
         JLabel dialLabel = new JLabel("New label");
-        dialLabel.setBounds(174, 489, 34, 34);
+        dialLabel.setBounds(185, 489, 34, 34);
         dialLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/dialpad.png")));
         dialLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         dialLabel.addMouseListener(new MouseAdapter() {
@@ -125,8 +121,8 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         
     }
 
-     // Handle ActionListener events
-     public void actionPerformed(ActionEvent e){
+    // Handle ActionListener events
+    public void actionPerformed(ActionEvent e){
         if( e.getSource() == homeBtn ){
             // Go to home screen
             HomeScreen panel = new HomeScreen();

@@ -6,8 +6,7 @@ import javax.swing.border.LineBorder;
 
 public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListener, KeyListener{
 
-    private static final Font font = new Font("Raleway", Font.PLAIN, 14);
-    private JButton homeBtn = new JButton("Home");
+    private JButton homeBtn = new JButton();
 
     private final JPanel timePanel = new JPanel();
     private final JPanel panel_1 = new JPanel();
@@ -48,7 +47,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
 		
         
         JLabel contactsLabel = new JLabel("New label");
-        contactsLabel.setBounds(174, 489, 34, 34);
+        contactsLabel.setBounds(185, 489, 34, 34);
         contactsLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/contac.png")));
         contactsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         contactsLabel.addMouseListener(new MouseAdapter() {
@@ -56,7 +55,17 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         		changeCurrentPage("contacts");
         	}
         });
-        add(contactsLabel);   
+        add(contactsLabel); 
+        
+        // Home Button
+		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
+		homeBtn.setIcon(homebar);
+        homeBtn.setForeground(Color.BLUE);
+        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        super.makeButtonTransparent(homeBtn, false);
+        add(homeBtn);
+        homeBtn.addActionListener(this);
         
     }
     
@@ -224,23 +233,6 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
              
     }
 
-    // Add a home button
-    public void addHomeButton(JPanel pane){
-        // Home Button
-        homeBtn.setFont(font);
-        homeBtn.setForeground(Color.BLUE);
-        homeBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        makeButtonTransparent(homeBtn, false);
-        pane.add(homeBtn);
-        homeBtn.addActionListener(this);
-    }// <-- end addHomeButton
-
-    // Make a button transparent
-    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(visibleBorder);
-    }// <-- end makeButtonTransparent
 
     // Handle ActionListener events
     public void actionPerformed(ActionEvent e){

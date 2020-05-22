@@ -58,4 +58,14 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         
     }
 
+    
+    // Make a button transparent
+    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
+        btn.setOpaque(false);
+        btn.setContentAreaFilled(false);
+        btn.setBorderPainted(visibleBorder);
+    }// <-- end makeButtonTransparent
+
+
+
 }

@@ -107,7 +107,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
     public void handleButtonClick(JButton src){
         
         if( src.getIcon() == phone ){
-            System.out.println("phone");
+            // System.out.println("phone");
             // Go to phone dialing page
             PhoneDial panel = new PhoneDial();
             NewWindowFrame frame = new NewWindowFrame(panel);
@@ -116,7 +116,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         }
 
         if( src.getIcon() == contacts ){
-            System.out.println("contacts");
+            // System.out.println("contacts");
             // Go to contacs page
             ContactsPage panel = new ContactsPage();
             NewWindowFrame frame = new NewWindowFrame(panel);
@@ -131,7 +131,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         }
 
         if( src.getIcon() == messages ){
-            System.out.println("messages");
+            // System.out.println("messages");
             // Go to messages page
             SendMessage panel = new SendMessage();
             NewWindowFrame frame = new NewWindowFrame(panel);
