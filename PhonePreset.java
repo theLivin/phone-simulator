@@ -52,7 +52,7 @@ public class PhonePreset extends PhonePresetWithNoWallpaper{
         int height = getHeight();
 
         // Draw iphone image on panel
-        g.drawImage(iphone, 0, 0, width, height, this);
+        g.drawImage(iphone, 0, 0, 281, height, this);
 
     }
 }

@@ -47,6 +47,7 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 			}
 		});
 		btnSend.setBounds(189, 384, 63, 40);
+		btnSend.setFocusable(false);
 		add(btnSend);
 		
 		JLabel lblWriteMessage = new JLabel("Write Message");
@@ -63,9 +64,10 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
         homeBtn.setForeground(Color.BLUE);
         homeBtn.setBounds(75, 532, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
-        makeButtonTransparent(homeBtn, false);
+		makeButtonTransparent(homeBtn, false);
+		homeBtn.setFocusable(false);
         add(homeBtn);
-        homeBtn.addActionListener(this);			
+		homeBtn.addActionListener(this);			
 
 	}
 

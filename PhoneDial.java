@@ -22,7 +22,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		setLayout(null);
 
 		// Width and height of most buttons
-		int x = 67, y = 40, w = 65, h = 65;
+		int x = 67, y = 50, w = 65, h = 65;
 
 		// Add contact		
 		ImageIcon imgAddContact1 = new ImageIcon(getClass().getResource("./images/icons/addContact.png"));
@@ -37,6 +37,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		addContact1.setBounds(67, y, w, h);
 		add(addContact1);
 		super.makeButtonTransparent(addContact1, false);
+		addContact1.setFocusable(false);
 		
 		// Send message		
 		ImageIcon imgSendMessage1 = new ImageIcon(getClass().getResource("./images/icons/sendMessage.png"));
@@ -51,6 +52,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		sendMessage1.setBounds(159, y, w, h);
 		add(sendMessage1);
 		super.makeButtonTransparent(sendMessage1, false);
+		sendMessage1.setFocusable(false);
 
 		// Change starting y
 		y = y + h + 5;
@@ -82,8 +84,9 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 			}
 		});
 		backSpace.setBounds(196, y - 7, 46, 46);
-		super.makeButtonTransparent(backSpace, false);
 		add(backSpace);
+		super.makeButtonTransparent(backSpace, false);
+		backSpace.setFocusable(false);
 		
 
 		// Dial pad
@@ -115,6 +118,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 			numpads[i].setBounds(x, y, w, h);
 			add(numpads[i]);
 			super.makeButtonTransparent(numpads[i], false);
+			numpads[i].setFocusable(false);
 
 			// -- register listeners for buttons
             numpads[i].addActionListener(new ActionListener() {
@@ -148,6 +152,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		call.setBounds(x, y-3, w, h);
 		add(call);
 		super.makeButtonTransparent(call, false);
+		call.setFocusable(false);
 
 		// Add navigation buttons
 		addRecAndConTab();			
@@ -160,7 +165,8 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
         super.makeButtonTransparent(homeBtn, false);
         add(homeBtn);
-        homeBtn.addActionListener(this);	
+		homeBtn.addActionListener(this);
+		homeBtn.setFocusable(false);
 	
 	}
 
@@ -245,7 +251,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 
 	// Handle special buttons clicks ie: add contacts, send message, dial
 	public void handleButtonClick(String btn, String msg){
-		System.out.println(msg);
+		// System.out.println(msg);
 		if(msg.contentEquals("")) {
 			// do nothing
 		}else{

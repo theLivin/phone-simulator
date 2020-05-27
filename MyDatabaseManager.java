@@ -59,9 +59,9 @@ public class MyDatabaseManager{
             stmnt = conn.createStatement();
             sql = "CREATE TABLE IF NOT EXISTS call_log(" +
                 "id INTEGER," +
-                "name VARCHAR(20)," +
                 "phone VARCHAR(20) NOT NULL," +
                 "time VARCHAR(10) NOT NULL," +
+                "duration VARCHAR(10) NOT NULL," +
                 "category VARCHAR(10) NOT NULL," +
                 "PRIMARY KEY(id)" +
             ")";
@@ -74,7 +74,6 @@ public class MyDatabaseManager{
                 "id INTEGER," +
                 "body VARCHAR(255) NOT NULL," +
                 "time VARCHAR(10)," +
-                "sender VARCHAR(10)," +
                 "receiver VARCHAR(10)," +
                 "PRIMARY KEY(id)" +
             ")";
@@ -89,26 +88,6 @@ public class MyDatabaseManager{
 
         }finally{
             releaseResources();
-        }
-    }
-
-    // Release resources
-    private void releaseResources(){
-         try{
-            if(conn != null){
-                // conn.close();
-            }
-            if(stmnt != null){
-                stmnt.close();
-            }
-            if(res != null){
-                res.close();
-            }
-            if(prepStmnt !=null){
-                prepStmnt.close();
-            }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
         }
     }
 
@@ -151,13 +130,13 @@ public class MyDatabaseManager{
             releaseResources();
         }
 
-        fetchAll();
+        // fetchAllContacts();
 
         return status;
     }
 
     // Read from table
-    public void fetchAll(){
+    public ResultSet fetchAllContacts(){
         // connect if not connected
         if(conn == null){
             connect();
@@ -167,18 +146,41 @@ public class MyDatabaseManager{
             String sql;
 
             stmnt = conn.createStatement();
-            sql = "SELECT * FROM phonebook";
+            sql = "SELECT * FROM phonebook ORDER BY name";
             res = stmnt.executeQuery(sql);
 
-            // System.out.println("reading from phonebook...");
-            System.out.printf("%-5s%-20s%-20s%-20s%n", "ID","NAME","PHONE","IMAGE");
-            while( res.next() ){
-                System.out.printf("%-5s%-20s%-20s%-20s%n",
-                res.getInt("id"),res.getString("name"),
-                res.getString("phone"), res.getString("image"));
-            }
+            return res;
+        
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
 
-            
+            return null;
+        }
+
+    }
+
+    // Find contact
+    public String findContact(String phone){
+        // find contact with phone number from phonebook table
+        String name = null;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "SELECT name FROM phonebook WHERE phone=?";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1, phone);
+            res = prepStmnt.executeQuery();
+
+            name = res.getString("name");
+
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
             System.out.println(ex.getSQLState());
@@ -187,7 +189,30 @@ public class MyDatabaseManager{
         }finally{
             releaseResources();
         }
+
+        return name;
     }
+
+
+    // Release resources
+    private void releaseResources(){
+        try{
+           if(conn != null){
+            //    conn.close();
+           }
+           if(stmnt != null){
+               stmnt.close();
+           }
+           if(res != null){
+            //    res.close();
+           }
+           if(prepStmnt !=null){
+               prepStmnt.close();
+           }
+       }catch(SQLException ex){
+           System.out.println(ex.getMessage());
+       }
+   }
 
 
 

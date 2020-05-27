@@ -16,12 +16,14 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
     private JButton dialBtn;
 
     private String contactName;
+    private String contactNumber;
     
     // Constructor -->
-    public ContactDetailsPage(String contactName){ 
+    public ContactDetailsPage(String contactName, String contactNumber){ 
         setLayout(null);
 
         this.contactName = contactName;
+        this.contactNumber = contactNumber;
 
         // back Button
         backBtn.setFont(font);
@@ -53,18 +55,14 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 	
 
         // Contacts
-        showContactDetails(contactName, "0234567891");
+        showContactDetails(contactName, contactNumber);
 
     }// <-- end Constructor
 
     // Show contacts on screen from param array
     public void showContactDetails(String name, String number){
         // Load user icon
-        Icon user;
-        if ( name == "Tomsin" || name == "Robert" || name == "Akyena")
-            user = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
-        else
-            user = new ImageIcon(getClass().getResource("./images/icons/user-f.png"));
+        Icon user = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
 
         // Contacts List
         // -- load dial icon
@@ -126,7 +124,11 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             System.out.println("we'll edit later");
         }
         if (e.getSource() == dialBtn){
-            System.out.println("dialing "+contactName+"...");
+            // System.out.println("dialing "+contactName+"...");
+            PhoneCall panel = new PhoneCall(contactNumber);
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
         if (e.getSource() == msgBtn){
             System.out.println("we'll start messaging "+contactName+" shortly");
