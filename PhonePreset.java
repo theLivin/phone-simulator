@@ -1,22 +1,22 @@
-import java.awt.Color;
-import java.awt.Graphics;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import javax.swing.JPanel;
 import javax.imageio.ImageIO;
-
 import java.io.File;
 
 
-public class PhonePreset extends JPanel{
-    // Define custom colors
-    private Color BACKGROUND = new Color(07, 69, 159);
-    private Color BUBBLE3 = new Color(255, 212, 00, 70);
-    private Color BUBBLE2 = new Color(255, 212, 00, 140);
-    private Color BUBBLE1 = new Color(255, 212, 00, 210);
+public class PhonePreset extends PhonePresetWithNoWallpaper{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// Define custom colors
+    private Color BACKGROUND = new Color(0xEB6383);
+    private Color BUBBLE3 = new Color(239, 243, 198, 70);
+    private Color BUBBLE2 = new Color(239, 243, 198, 140);
+    private Color BUBBLE1 = new Color(239, 243, 198, 160);
     private Color SHADOW1 = new Color(23, 31, 42, 80);
-    private Color SHADOW2 = new Color(23, 31, 42, 160);
-    private Color SHADOW3 = new Color(23, 31, 42, 240);
+    private Color SHADOW2 = new Color(23, 31, 42, 120);
+    private Color SHADOW3 = new Color(23, 31, 42, 200);
 
     private BufferedImage iphone;
 
@@ -32,9 +32,6 @@ public class PhonePreset extends JPanel{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        // Get width and height of panel
-        int width = getWidth();
-        int height = getHeight();
 
         // Draw Wallpaper design
         g.setColor(SHADOW1);
@@ -54,12 +51,12 @@ public class PhonePreset extends JPanel{
 
         g.fillOval(130, 350, 100, 100);
 
-
-        // new Color(23, 31, 42, 160)
+        // Get width and height of panel
+        int width = getWidth();
+        int height = getHeight();
 
         // Draw iphone image on panel
         g.drawImage(iphone, 0, 0, width, height, this);
 
-        // System.out.println("Width: "+width+" Height: "+height);
     }
 }
