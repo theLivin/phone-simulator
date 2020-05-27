@@ -11,7 +11,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
     // Create home screen buttons
     private JButton[] buttons = new JButton[4];
     private JButton clock = new JButton();
-    private JButton smallClock = new JButton();
+    // private JButton smallClock = new JButton();
 
     // Load image files
     Icon phone = new ImageIcon(getClass().getResource("./images/icons/phone.png"));
@@ -47,6 +47,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         clock.setOpaque(false);
         clock.setContentAreaFilled(false);
         clock.setBorderPainted(false);
+        clock.setFocusable(false);
         add(clock);
         
         // Create mat for icons to lie on
@@ -71,6 +72,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
             buttons[i].setOpaque(false);
             buttons[i].setContentAreaFilled(false);
             buttons[i].setBorderPainted(false);
+            buttons[i].setFocusable(false);
         }
 
         // Set coordinates for buttons

@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.io.File;
 
 public class PhoneSimulator{
+    
     public static void main(String[] args){
         // Create font
         try{

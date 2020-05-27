@@ -11,7 +11,7 @@ public class PhonePresetWithNoWallpaper extends JPanel{
     private Color BACKGROUND = Color.WHITE;
     protected Color FOREGROUND = Color.BLACK;
 
-    private JButton clock = new JButton();
+    private JLabel clock = new JLabel();
 
     private BufferedImage iphone;
 
@@ -27,6 +27,7 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         }catch(Exception e){
             System.out.println(e.getMessage());
         }
+        
     }
 
     public void paintComponent(Graphics g){
@@ -45,16 +46,12 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         Dimension size = clock.getPreferredSize();
         
         clock.setFont(new Font("Raleway", Font.PLAIN, 12));
-        clock.setBounds(0, 12, 100, size.height);
+        clock.setBounds(40, 15, 100, size.height);
 
-        // -- make clock button transparent
-        clock.setOpaque(false);
-        clock.setContentAreaFilled(false);
-        clock.setBorderPainted(false);
         add(clock);
        
         // Draw iphone image on panel
-        g.drawImage(iphone, 0, 0, width, height, this);
+        g.drawImage(iphone, 0, 0, 281, height, this);
         
     }
 

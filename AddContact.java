@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 public class AddContact extends PhonePresetWithNoWallpaper implements ActionListener {	
-	private static final Font font = new Font("Raleway", Font.PLAIN, 14);
+	private static final Font labelFont = new Font("Raleway", Font.PLAIN, 14);
 	private JTextField nameTextField = new JTextField();
 	private JTextField numTextField = new JTextField();
 
@@ -15,8 +15,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 	JButton btnDiscard = new JButton("Discard");
 	JButton btnSave = new JButton("Save");
 
-
-	public AddContact(String Param) {
+	public AddContact(String param) {
 		JLabel headText = new JLabel("New Contact");
 		headText.setFont(new Font("Raleway", Font.BOLD, 24));
 		headText.setForeground(Color.BLUE);
@@ -30,47 +29,48 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		contactImage.setAlignmentX(SwingConstants.CENTER);
 		contactImage.setAlignmentY(SwingConstants.CENTER);
 		super.makeButtonTransparent(contactImage, false);
+		contactImage.setFocusable(false);
 		add(contactImage);
 		
-		
 		JLabel lblName = new JLabel("Name");
-		lblName.setFont(new Font("Raleway", Font.PLAIN, 14));
+		lblName.setFont(labelFont);
 		lblName.setForeground(Color.GRAY);
 		lblName.setBounds(50, 270, 55, 23);
 		add(lblName);
 		
-		nameTextField.setFont(new Font("Raleway", Font.PLAIN, 20));
-		nameTextField.setBounds(50, 295, 176, 26);
+		nameTextField.setFont(new Font("Raleway", Font.PLAIN, 18));
+		nameTextField.setBounds(50, 295, 176, 32);
 		add(nameTextField);
 		nameTextField.setColumns(10);
 		
 		JLabel lblContact = new JLabel("Contact");
 		lblContact.setForeground(Color.GRAY);
-		lblContact.setFont(new Font("Raleway", Font.PLAIN, 14));
-		lblContact.setBounds(50, 323, 55, 23);
+		lblContact.setFont(labelFont);
+		lblContact.setBounds(50, 329, 55, 23);
 		add(lblContact);
 		
 		numTextField.setColumns(10);
-		numTextField.setFont(new Font("Raleway", Font.PLAIN, 20));
-		numTextField.setBounds(50, 348, 176, 26);
+		numTextField.setFont(new Font("Raleway", Font.PLAIN, 18));
+		numTextField.setBounds(50, 354, 176, 32);
 		add(numTextField);
-		numTextField.setText(Param);
-	
+		numTextField.setText(param);
 		
-		btnDiscard.setBounds(50, 400, 85, 25);
-		btnDiscard.setFont(new Font("Raleway", Font.PLAIN, 14));
+		btnDiscard.setBounds(50, 406, 85, 25);
+		btnDiscard.setFont(labelFont);
 		btnDiscard.setBackground(new Color(0xE54141));
 		btnDiscard.setForeground(Color.WHITE);
 		btnDiscard.setBorder(null);
 		btnDiscard.addActionListener(this);
+		btnDiscard.setFocusable(false);
 		add(btnDiscard);
 		
-		btnSave.setBounds(142, 400, 85, 25);
-		btnSave.setFont(new Font("Raleway", Font.PLAIN, 14));
+		btnSave.setBounds(142, 406, 85, 25);
+		btnSave.setFont(labelFont);
 		btnSave.setBackground(new Color(0x4AD862));
 		btnSave.setForeground(Color.WHITE);
 		btnSave.setBorder(null);
 		btnSave.addActionListener(this);
+		btnSave.setFocusable(false);
 		add(btnSave);
 		
         // Home Button
@@ -79,7 +79,8 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
         homeBtn.setForeground(Color.BLUE);
         homeBtn.setBounds(75, 532, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
-        makeButtonTransparent(homeBtn, false);
+		makeButtonTransparent(homeBtn, false);
+		homeBtn.setFocusable(false);
         add(homeBtn);
         homeBtn.addActionListener(this);	
 	
@@ -87,7 +88,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnDiscard){
-			// --go to home screen
+			// --go to dial screen
             PhoneDial panel = new PhoneDial();
             NewWindowFrame frame = new NewWindowFrame(panel);
             frame.setVisible(true);
@@ -101,7 +102,18 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 			
 			if(phone != ""){
 				MyDatabaseManager db = new MyDatabaseManager();
-				System.out.println(db.insertContact(name, phone, ""));				
+				boolean status = db.insertContact(name, phone, "");
+
+				if(status == true){
+					// --go to dial screen
+					ContactsPage panel = new ContactsPage();
+					NewWindowFrame frame = new NewWindowFrame(panel);
+					frame.setVisible(true);
+					((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+				}else{
+					JOptionPane.showMessageDialog(this, String.format("Contact already saved!"));
+				}
+
 			}
 
 		}

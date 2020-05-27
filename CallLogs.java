@@ -64,6 +64,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         homeBtn.setBounds(75, 532, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
         super.makeButtonTransparent(homeBtn, false);
+        homeBtn.setFocusable(false);
         add(homeBtn);
         homeBtn.addActionListener(this);
         
@@ -126,7 +127,8 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         panel_1.setBounds(0, 0, 265, 21);
         
         timePanel.add(panel_1);
-        lblToday.setFont(new Font("Raleway", Font.PLAIN, 14));
+        lblToday.setFont(new Font("Raleway", Font.PLAIN, 16));
+        lblToday.setForeground(Color.GRAY);
         lblToday.setBounds(0, 0, 171, 21);
         
         panel_1.add(lblToday);
@@ -261,8 +263,8 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
   
     // Show single contact page
     public void showSingleContactPage(String name, ActionEvent e){
-
-        ContactDetailsPage panel = new ContactDetailsPage(name);
+        String number = "123";
+        ContactDetailsPage panel = new ContactDetailsPage(name, number);
         NewWindowFrame frame = new NewWindowFrame(panel);
         frame.setVisible(true);
         ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();

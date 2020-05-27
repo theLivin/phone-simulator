@@ -14,21 +14,26 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 	};
 	
 	public PhoneCall( String param) {
-		setBackground(new Color(82, 97, 107, 220));
+		setBackground(new Color(10, 10, 10, 220));
+
+		MyDatabaseManager db = new MyDatabaseManager();
+		String name = db.findContact(param);
+
+		param = (name == null) ? param : name;
 
 		// Name or number		
 		JLabel contactName = new JLabel(param);
 		contactName.setFont(new Font("Raleway", Font.PLAIN, 30));
 		// contactName.setToolTipText("");
 		contactName.setForeground(Color.WHITE);
-		contactName.setBounds(30, 87, 201, 50);
+		contactName.setBounds(40, 87, 201, 50);
 		contactName.setHorizontalAlignment(SwingConstants.CENTER);
 		add(contactName);
 		
 		JLabel lblCalling = new JLabel("calling eyePhone...");
 		lblCalling.setFont(new Font("Raleway", Font.PLAIN, 12));
 		lblCalling.setForeground(Color.WHITE);
-		lblCalling.setBounds(30, 137, 201, 27);
+		lblCalling.setBounds(40, 135, 201, 27);
 		lblCalling.setHorizontalAlignment(SwingConstants.CENTER);
 		add(lblCalling);
 
