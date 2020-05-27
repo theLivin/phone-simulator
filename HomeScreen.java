@@ -1,4 +1,5 @@
 import java.awt.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 import java.time.format.DateTimeFormatter;
@@ -65,7 +66,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         for( int i=0; i<buttons.length; i++)
             buttons[i].setIcon(icons[i]);
         
-        // - make buttons baground transparent
+        // - make buttons background transparent
         for( int i=0; i<buttons.length; i++){
             buttons[i].setOpaque(false);
             buttons[i].setContentAreaFilled(false);
@@ -106,13 +107,16 @@ public class HomeScreen extends PhonePreset implements ActionListener{
     public void handleButtonClick(JButton src){
         
         if( src.getIcon() == phone ){
-            System.out.println("phone");
+            // System.out.println("phone");
             // Go to phone dialing page
-            // code...
+            PhoneDial panel = new PhoneDial();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
 
         if( src.getIcon() == contacts ){
-            System.out.println("contacts");
+            // System.out.println("contacts");
             // Go to contacs page
             ContactsPage panel = new ContactsPage();
             NewWindowFrame frame = new NewWindowFrame(panel);
@@ -127,9 +131,13 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         }
 
         if( src.getIcon() == messages ){
-            System.out.println("messages");
+            // System.out.println("messages");
             // Go to messages page
-            // code...
+            SendMessage panel = new SendMessage();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
     }
+
 }

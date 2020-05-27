@@ -8,6 +8,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
     // Variable declarations and definitions
     private static final Font font = new Font("Raleway", Font.PLAIN, 14);
 
+    private JButton homeBtn = new JButton();
     private JButton backBtn = new JButton("Back");
     private JButton editBtn = new JButton("Edit");
     private JButton msgBtn = new JButton("Send Message");
@@ -27,7 +28,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         backBtn.setForeground(Color.BLUE);
         backBtn.setBounds(7, 60, 80, 20);
         backBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        makeButtonTransparent(backBtn, false);
+        super.makeButtonTransparent(backBtn, false);
         add(backBtn);
         backBtn.addActionListener(this);
 
@@ -36,9 +37,20 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         editBtn.setForeground(Color.BLUE);
         editBtn.setBounds(190, 60, 80, 20);
         editBtn.setHorizontalAlignment(SwingConstants.RIGHT);
-        makeButtonTransparent(editBtn, false);
+        super.makeButtonTransparent(editBtn, false);
         add(editBtn);
         editBtn.addActionListener(this);
+
+        // Home Button
+		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
+		homeBtn.setIcon(homebar);
+        homeBtn.setForeground(Color.BLUE);
+        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        super.makeButtonTransparent(homeBtn, false);
+        add(homeBtn);
+        homeBtn.addActionListener(this);	
+	
 
         // Contacts
         showContactDetails(contactName, "0234567891");
@@ -94,13 +106,6 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 
     }// <-- end showContactDetails
 
-    // Make a button transparent
-    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(visibleBorder);
-    }// <-- end makeButtonTransparent
-
     // Handle ActionListener events
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == backBtn){
@@ -109,6 +114,13 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             NewWindowFrame frame = new NewWindowFrame(panel);
             frame.setVisible(true);
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+        if(e.getSource() == homeBtn){
+            // -- go to home screen
+            HomeScreen panel = new HomeScreen();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame)SwingUtilities.getWindowAncestor(this)).dispose();
         }
         if (e.getSource() == editBtn){
             System.out.println("we'll edit later");

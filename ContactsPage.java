@@ -9,7 +9,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     private static final Font font = new Font("Raleway", Font.PLAIN, 14);
     private static final Font boldFont = new Font("Raleway", Font.BOLD, 14);
 
-    private JButton homeBtn = new JButton("Home");
+    private JButton homeBtn = new JButton();
     
     private JTextField searchBar = new JTextField("Search Contact", 20);
     private JButton searchBtn = new JButton();
@@ -18,24 +18,26 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     private ArrayList<JButton> contactBtn = new ArrayList<JButton>();
     private String[] contactNames = {"Robert", "Akyena", "Tomsin", "Gifty", "Elle", "Mandy"};
     private String[] contactNumber = {"0234567891", "0234567891", "0234567891", "0234567891", "0234567891", "0234567891"};
-
+    
     // Constructor -->
-    public ContactsPage(){ 
-        setLayout(null);
+    public ContactsPage(){
 
         // Sort contacts list
         Arrays.sort(contactNames);
+        setLayout(null);
+        homeBtn.setBounds(7, 60, 80, 20);
        
         // Home Button
-        homeBtn.setFont(font);
+		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
+		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
-        homeBtn.setBounds(7, 60, 80, 20);
-        homeBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        makeButtonTransparent(homeBtn, false);
+        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        super.makeButtonTransparent(homeBtn, false);
         add(homeBtn);
-        homeBtn.addActionListener(this);
-        
-        // SearchBar
+        homeBtn.addActionListener(this);	
+	
+        // Search Bar
         searchBar.setBounds(23, 90, 185, 25);
         searchBar.setFont(font);
         add(searchBar);
@@ -43,18 +45,20 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         // Search Button
         Icon searchIcon = new ImageIcon(getClass().getResource("./images/icons/search.png"));
-        searchBtn.setBounds(208, 90, 50, 25);
+        searchBtn.setBounds(203, 85, 50, 30);
         searchBtn.setIcon(searchIcon);
-        makeButtonTransparent(searchBtn, true);
+        super.makeButtonTransparent(searchBtn, false);
         add(searchBtn);
         searchBtn.addActionListener(this);
 
         // Contacts
         JLabel label = new JLabel("Contacts");
-        label.setBounds(23, 125, 200, 20);
+        label.setBounds(33, 125, 190, 20);
         label.setFont(font);
         label.setForeground(Color.GRAY);
         add(label);
+        
+        addRecAndConTab();
 
         showContacts(contactNames, contactNumber);
 
@@ -90,13 +94,32 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         }
 
     }// <-- end showContacts
-
-    // Make a button transparent
-    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(visibleBorder);
-    }// <-- end makeButtonTransparent
+       
+    // Draw buttons at the bottom ie call logs, contacts and dialpad
+    public void addRecAndConTab() {
+    	JLabel recentLabel = new JLabel("New label");
+    	recentLabel.setBounds(62, 489, 34, 34);
+        recentLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/recent.png")));
+        recentLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        recentLabel.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent arg0) {
+                changeCurrentPage("logs");
+            }
+        });
+        add(recentLabel);
+        
+        JLabel dialLabel = new JLabel("New label");
+        dialLabel.setBounds(185, 489, 34, 34);
+        dialLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/dialpad.png")));
+        dialLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+        dialLabel.addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent arg0) {
+        		changeCurrentPage("dial");
+        	}
+        });
+        add(dialLabel);   
+        
+    }
 
     // Handle ActionListener events
     public void actionPerformed(ActionEvent e){
@@ -114,7 +137,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
             System.out.println("searching for: " + searchString);
         }
     }// <-- end actionPerformed
-
+        
     // Handle KeyListener events
     public void keyTyped(KeyEvent e){
         char c = e.getKeyChar();
@@ -141,4 +164,28 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
     }// <-- end showSingleContactPage
 
+    // Change current page
+    public void changeCurrentPage(String target){
+        if(target == "dial"){
+            // go to dial page
+            PhoneDial panel = new PhoneDial();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+        else if(target == "contacts"){
+            // go to contacts page
+            ContactsPage panel = new ContactsPage();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+        else if(target == "logs"){
+            // go to call logs page
+            CallLogs panel = new CallLogs();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+    }
 }
