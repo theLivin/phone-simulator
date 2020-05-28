@@ -27,7 +27,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // back Button
         backBtn.setFont(font);
         backBtn.setForeground(Color.BLUE);
-        backBtn.setBounds(7, 60, 80, 20);
+        backBtn.setBounds(10, 60, 80, 20);
         backBtn.setHorizontalAlignment(SwingConstants.LEFT);
         super.makeButtonTransparent(backBtn, false);
         add(backBtn);
@@ -36,7 +36,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // edit Button
         editBtn.setFont(font);
         editBtn.setForeground(Color.BLUE);
-        editBtn.setBounds(190, 60, 80, 20);
+        editBtn.setBounds(193, 60, 80, 20);
         editBtn.setHorizontalAlignment(SwingConstants.RIGHT);
         super.makeButtonTransparent(editBtn, false);
         add(editBtn);
@@ -46,7 +46,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
 		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
-        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setBounds(78, 532, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
         super.makeButtonTransparent(homeBtn, false);
         add(homeBtn);
@@ -67,7 +67,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // -- load dial icon
         Icon dial = new ImageIcon(getClass().getResource("./images/icons/dial.png"));
 
-        int x = 23, y = 120, w = 235, h = 150;
+        int x = 26, y = 120, w = 238, h = 150;
 
         // -- name button
         nameLabel = new JLabel(name, user, JLabel.CENTER);

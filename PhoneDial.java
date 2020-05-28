@@ -22,7 +22,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		setLayout(null);
 
 		// Width and height of most buttons
-		int x = 67, y = 50, w = 65, h = 65;
+		int x = 70, y = 50, w = 65, h = 65;
 
 		// Add contact		
 		ImageIcon imgAddContact1 = new ImageIcon(getClass().getResource("./images/icons/addContact.png"));
@@ -34,7 +34,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 				handleButtonClick("add", msg);				
 			}
 		});
-		addContact1.setBounds(67, y, w, h);
+		addContact1.setBounds(70, y, w, h);
 		add(addContact1);
 		super.makeButtonTransparent(addContact1, false);
 		addContact1.setFocusable(false);
@@ -62,7 +62,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		textField.setFont(new Font("Raleway", Font.PLAIN, 22));
 		textField.setHorizontalAlignment(SwingConstants.TRAILING);
 		textField.setBorder(null);
-		textField.setBounds(39, y, 156, 35);
+		textField.setBounds(42, y, 156, 35);
 		add(textField);
 		textField.setColumns(10);
 
@@ -83,7 +83,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 				}
 			}
 		});
-		backSpace.setBounds(196, y - 7, 46, 46);
+		backSpace.setBounds(199, y - 7, 46, 46);
 		add(backSpace);
 		super.makeButtonTransparent(backSpace, false);
 		backSpace.setFocusable(false);
@@ -92,9 +92,9 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		// Dial pad
 		ImageIcon icon;
 		JButton[] numpads = new JButton[13];
-		x = 39; y = y + 39;
+		x = 42; y = y + 42;
 		w = 65; h = 65;
-		int xi = 39;
+		int xi = 42;
 
 
 		// Add text numpads
@@ -161,7 +161,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
 		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
-        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setBounds(78, 535, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
         super.makeButtonTransparent(homeBtn, false);
         add(homeBtn);

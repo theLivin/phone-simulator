@@ -17,7 +17,7 @@ public class PhoneSimulator{
         HomeScreen home = new HomeScreen();
 
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        application.setSize(287, 590);
+        application.setSize(293, 596);
         application.setVisible(true);
         application.setResizable(false);
         application.setLocationRelativeTo(null);

@@ -77,7 +77,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
 		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
-        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setBounds(78, 535, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		makeButtonTransparent(homeBtn, false);
 		homeBtn.setFocusable(false);

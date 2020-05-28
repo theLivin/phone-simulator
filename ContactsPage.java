@@ -30,7 +30,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     public ContactsPage(){
         // Add contact button
         Icon addIcon = new ImageIcon(getClass().getResource("./images/icons/add.png"));
-        addBtn.setBounds(12, 50, 50, 30);
+        addBtn.setBounds(15, 50, 50, 30);
         addBtn.setIcon(addIcon);
         super.makeButtonTransparent(addBtn, false);
         addBtn.setFocusable(false);
@@ -44,7 +44,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
 		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
-        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setBounds(78, 532, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
         super.makeButtonTransparent(homeBtn, false);
         homeBtn.setFocusable(false);
@@ -52,14 +52,14 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         homeBtn.addActionListener(this);	
 	
         // Search Bar
-        searchBar.setBounds(23, 90, 185, 25);
+        searchBar.setBounds(26, 90, 185, 25);
         searchBar.setFont(font);
         add(searchBar);
         searchBar.addKeyListener(this);
 
         // Search Button
         Icon searchIcon = new ImageIcon(getClass().getResource("./images/icons/search.png"));
-        searchBtn.setBounds(203, 85, 50, 30);
+        searchBtn.setBounds(206, 85, 50, 30);
         searchBtn.setIcon(searchIcon);
         super.makeButtonTransparent(searchBtn, false);
         searchBtn.setFocusable(false);
@@ -68,7 +68,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         // Contacts
         JLabel label = new JLabel("Contacts");
-        label.setBounds(33, 125, 190, 20);
+        label.setBounds(36, 125, 190, 20);
         label.setFont(font);
         label.setForeground(Color.GRAY);
         add(label);
@@ -82,7 +82,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     // Show contacts on screen from param array
     public void showContacts(){
         // Contacts List
-        int x = 23, y = 150, w = 235, h = 45;
+        int x = 26, y = 150, w = 238, h = 45;
         int i = 0;
 
         // show contacts if phonebook is not empty
@@ -147,7 +147,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     // Draw buttons at the bottom ie call logs, contacts and dialpad
     public void addRecAndConTab() {
     	JLabel recentLabel = new JLabel("New label");
-    	recentLabel.setBounds(62, 489, 34, 34);
+    	recentLabel.setBounds(65, 492, 34, 34);
         recentLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/recent.png")));
         recentLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         recentLabel.addMouseListener(new MouseAdapter() {
@@ -158,7 +158,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         add(recentLabel);
         
         JLabel dialLabel = new JLabel("New label");
-        dialLabel.setBounds(185, 489, 34, 34);
+        dialLabel.setBounds(188, 492, 34, 34);
         dialLabel.setIcon(new ImageIcon(getClass().getResource("/images/icons/dialpad.png")));
         dialLabel.setVerticalAlignment(SwingConstants.BOTTOM);
         dialLabel.addMouseListener(new MouseAdapter() {
