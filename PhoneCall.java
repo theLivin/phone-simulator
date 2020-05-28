@@ -40,7 +40,7 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		// Extra icons
 		int w = 79,
 			h = 75, 
-			x = 22, 
+			x = 25, 
 			y1 = 190, 
 			y2 = y1 + h;
 

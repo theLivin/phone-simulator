@@ -28,7 +28,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
 
         // Create mat for clock to on
         g.setColor(new Color(82, 97, 107, 160)); // rgba , a => transparency(alpha)
-        g.fillRoundRect(23, 135, 235, 100, 30, 30);
+        g.fillRoundRect(26, 135, 235, 100, 30, 30);
 
         // Get system time
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -41,7 +41,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
        
         clock.setFont(new Font("Raleway", Font.PLAIN, 72));
         clock.setForeground(Color.WHITE);
-        clock.setBounds(23, 125, 235, 105);
+        clock.setBounds(26, 125, 235, 105);
 
         // -- make clock button transparent
         clock.setOpaque(false);
@@ -51,8 +51,8 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         add(clock);
         
         // Create mat for icons to lie on
-        g.setColor(new Color(23, 31, 42, 160)); // rgba , a => transparency(alpha)
-        g.fillRoundRect(23, 471, 235, 60, 30, 30);
+        g.setColor(new Color(26, 31, 42, 160)); // rgba , a => transparency(alpha)
+        g.fillRoundRect(26, 471, 235, 60, 30, 30);
 
         // Load icons and put them buttons
         // -- instantiate buttons
@@ -76,7 +76,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         }
 
         // Set coordinates for buttons
-        int btnX = 25;
+        int btnX = 28;
         int btnY = 471;
         int btnW = 58;
         int btnH = 60;
@@ -129,7 +129,10 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         if( src.getIcon() == calendar ){
             System.out.println("calendar");
             // Go to calendar page
-            // code...
+            CalendarPanel panel = new CalendarPanel();
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
 
         if( src.getIcon() == messages ){

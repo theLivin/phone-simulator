@@ -14,7 +14,7 @@ public class NewWindowFrame extends JFrame{
         this.panel = panel;
         setTitle("eyePhone");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(287, 590);//287, 590
+        setSize(293, 596);//287, 590
         setResizable(false);
         setLocationRelativeTo(null);
 
