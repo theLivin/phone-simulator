@@ -1,7 +1,8 @@
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 
 public class PhoneCall extends PhonePresetWithNoWallpaper {
@@ -13,13 +14,26 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		{"mute.png", "keypad-white.png", "speaker.png", "plus.png", "facetime-2.png", "contact-filled-white.png"}
 	};
 	
+	private MyDatabaseManager db = new MyDatabaseManager();
+
 	public PhoneCall( String param) {
 		setBackground(new Color(10, 10, 10, 220));
 
-		MyDatabaseManager db = new MyDatabaseManager();
-		String name = db.findContact(param);
+		// Add call to call log
+		// -- get system time and date
+		LocalDateTime now = LocalDateTime.now();
+		
+        DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
+		String time = timeFormat.format(now);
 
-		param = (name == null) ? param : name;
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("E, MMM d yyyy");
+		String date = dateFormat.format(now);
+		// -- finally add call log
+		db.insertCallLog(param, date, time, "dialed");
+
+		// Check if contact is saved and display name instead of number
+		String name = db.findContact(param);
+		param = (name == null || (name.contentEquals(""))) ? param : name;
 
 		// Name or number		
 		JLabel contactName = new JLabel(param);

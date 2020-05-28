@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
 
 
@@ -86,8 +85,8 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         dialBtn.setFont(font);
         dialBtn.setBounds(x, y, w, h);
         dialBtn.setHorizontalAlignment(SwingConstants.LEFT);
-        dialBtn.setHorizontalTextPosition(SwingConstants.LEFT);
-        dialBtn.setIconTextGap(95);
+        dialBtn.setHorizontalTextPosition(SwingConstants.RIGHT);
+        dialBtn.setIconTextGap(25);
         dialBtn.setBackground(Color.WHITE);                  
         add(dialBtn);
         dialBtn.addActionListener(this);

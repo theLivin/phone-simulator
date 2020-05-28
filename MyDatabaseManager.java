@@ -60,8 +60,8 @@ public class MyDatabaseManager{
             sql = "CREATE TABLE IF NOT EXISTS call_log(" +
                 "id INTEGER," +
                 "phone VARCHAR(20) NOT NULL," +
+                "date VARCHAR(255) NOT NULL," +
                 "time VARCHAR(10) NOT NULL," +
-                "duration VARCHAR(10) NOT NULL," +
                 "category VARCHAR(10) NOT NULL," +
                 "PRIMARY KEY(id)" +
             ")";
@@ -73,6 +73,7 @@ public class MyDatabaseManager{
             sql = "CREATE TABLE IF NOT EXISTS message(" +
                 "id INTEGER," +
                 "body VARCHAR(255) NOT NULL," +
+                "date VARCHAR(255) NOT NULL," +
                 "time VARCHAR(10)," +
                 "receiver VARCHAR(10)," +
                 "PRIMARY KEY(id)" +
@@ -91,7 +92,8 @@ public class MyDatabaseManager{
         }
     }
 
-    // Insert from table
+    // Phonebook
+    // -- insert into contacts table
     public boolean insertContact(String name, String phone, String image){
         boolean status = false;
 
@@ -130,12 +132,10 @@ public class MyDatabaseManager{
             releaseResources();
         }
 
-        // fetchAllContacts();
-
         return status;
     }
 
-    // Read from table
+    // -- read from contacts table
     public ResultSet fetchAllContacts(){
         // connect if not connected
         if(conn == null){
@@ -161,7 +161,7 @@ public class MyDatabaseManager{
 
     }
 
-    // Find contact
+    // -- find contact
     public String findContact(String phone){
         // find contact with phone number from phonebook table
         String name = null;
@@ -192,6 +192,100 @@ public class MyDatabaseManager{
 
         return name;
     }
+
+    // Call log
+    // -- add call logs
+    public boolean insertCallLog(String phone, String date, String time, String category){
+        boolean status = false;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            // add contact to call_log table
+            sql = "INSERT INTO call_log(phone, date, time, category) VALUES(?,?,?,?)";
+            prepStmnt = conn.prepareStatement(sql);
+
+            prepStmnt.setString(1, phone);
+            prepStmnt.setString(2, date);
+            prepStmnt.setString(3, time);
+            prepStmnt.setString(4, category);
+
+            prepStmnt.execute();
+
+            status = true;
+
+            System.out.printf("call log entry created{phone: %s, date: %s, time: %s, cateory: %s} %n", phone, date, time, category);
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            status = false;
+
+        }finally{
+            releaseResources();
+        }
+
+        return status;
+    }
+
+    // -- fetch call history
+    public ResultSet fetchAllCallLog(){
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            stmnt = conn.createStatement();
+            sql = "SELECT * FROM call_log ORDER BY time DESC";
+            res = stmnt.executeQuery(sql);
+
+            return res;
+        
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return null;
+        }
+
+    }
+    
+    // -- fetch a specific category of call logs
+    public ResultSet fetchSpecificCallLog(String category){
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "SELECT * FROM call_log WHERE category=? ORDER BY id DESC";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1, category);
+            return prepStmnt.executeQuery();
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return null;
+        }
+    }
+
+
 
 
     // Release resources
