@@ -10,7 +10,9 @@ import java.security.*;
 
 public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListener, KeyListener{
 
+    // Clear Call log button
     private JButton homeBtn = new JButton();
+    JButton clearBtn = new JButton();
     
     private SecureRandom randomNumbers = new SecureRandom(); // object for random numbers
 
@@ -65,6 +67,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
                 }
             });
             homeBtn.addActionListener(this);
+            clearBtn.addActionListener(this);
 
             eventsAdded = true;
         }
@@ -129,6 +132,14 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
     }
 
     private void showNavigationButtons(){
+        
+        Icon addIcon = new ImageIcon(getClass().getResource("./images/icons/delete.png"));
+        clearBtn.setBounds(223, 50, 50, 30);
+        clearBtn.setIcon(addIcon);
+        super.makeButtonTransparent(clearBtn, false);
+        clearBtn.setFocusable(false);
+        add(clearBtn);
+
         // Show top nav
         JPanel topNav = new JPanel();
         topNav.setLayout(null);
@@ -239,7 +250,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
 
                     // making the line under the Calendar label
                     JSeparator separator = new JSeparator();
-                    separator.setBackground(Color.DARK_GRAY);
+                    separator.setBackground(Color.LIGHT_GRAY);
                     separator.setBounds(x , y, w, 2);
                     contactListPanel.add(separator);
                     y += 4;
@@ -248,7 +259,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
                     JLabel contactLog = new JLabel();
                     contactLog.setText(String.format("%s",name));
                     contactLog.setIcon(contactImage);
-                    contactLog.setForeground(Color.RED);
+                    contactLog.setForeground(Color.DARK_GRAY);
                     contactLog.setFont(new Font("Raleway", Font.PLAIN, 18));
                     contactLog.setHorizontalAlignment(SwingConstants.LEFT);
                     contactLog.setVerticalAlignment(SwingConstants.TOP);
@@ -326,6 +337,17 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
             NewWindowFrame frame = new NewWindowFrame(panel);
             frame.setVisible(true);
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+        }
+        if( e.getSource() == clearBtn ){
+            // Go to home screen
+            MyDatabaseManager db = new MyDatabaseManager();
+            if(db.clearCallLog()){
+                // refresh page
+                CallLogs panel = new CallLogs();
+                NewWindowFrame frame = new NewWindowFrame(panel);
+                frame.setVisible(true);
+                ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+            }
         }
 
     }// <-- end actionPerformed    

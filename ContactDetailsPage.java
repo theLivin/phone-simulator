@@ -9,7 +9,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 
     private JButton homeBtn = new JButton();
     private JButton backBtn = new JButton("Back");
-    private JButton editBtn = new JButton("Edit");
+    private JButton deleteBtn = new JButton("Delete");
     private JButton msgBtn = new JButton("Send Message");
     private JLabel nameLabel;
     private JButton dialBtn;
@@ -27,20 +27,22 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // back Button
         backBtn.setFont(font);
         backBtn.setForeground(Color.BLUE);
-        backBtn.setBounds(10, 60, 80, 20);
-        backBtn.setHorizontalAlignment(SwingConstants.LEFT);
+        backBtn.setBounds(10, 70, 80, 30);
+        backBtn.setHorizontalAlignment(SwingConstants.CENTER);
         super.makeButtonTransparent(backBtn, false);
         add(backBtn);
         backBtn.addActionListener(this);
+        backBtn.setFocusable(false);
 
-        // edit Button
-        editBtn.setFont(font);
-        editBtn.setForeground(Color.BLUE);
-        editBtn.setBounds(193, 60, 80, 20);
-        editBtn.setHorizontalAlignment(SwingConstants.RIGHT);
-        super.makeButtonTransparent(editBtn, false);
-        add(editBtn);
-        editBtn.addActionListener(this);
+        // delete Button
+        deleteBtn.setForeground(Color.RED);
+        deleteBtn.setFont(font);
+        deleteBtn.setFocusable(false);
+        deleteBtn.setBounds(193, 70, 80, 30);
+        deleteBtn.setHorizontalAlignment(SwingConstants.CENTER);
+        super.makeButtonTransparent(deleteBtn, false);
+        add(deleteBtn);
+        deleteBtn.addActionListener(this);
 
         // Home Button
 		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
@@ -51,6 +53,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         super.makeButtonTransparent(homeBtn, false);
         add(homeBtn);
         homeBtn.addActionListener(this);	
+        homeBtn.setFocusable(false);
 	
 
         // Contacts
@@ -90,6 +93,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         dialBtn.setBackground(Color.WHITE);                  
         add(dialBtn);
         dialBtn.addActionListener(this);
+        dialBtn.setFocusable(false);
 
         // -- send message Button
         y = y+h+10;
@@ -100,6 +104,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         msgBtn.setBackground(Color.WHITE);
         add(msgBtn);
         msgBtn.addActionListener(this);
+        msgBtn.setFocusable(false);
 
     }// <-- end showContactDetails
 
@@ -119,8 +124,19 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             frame.setVisible(true);
             ((JFrame)SwingUtilities.getWindowAncestor(this)).dispose();
         }
-        if (e.getSource() == editBtn){
-            System.out.println("we'll edit later");
+        if (e.getSource() == deleteBtn){
+            // Delete contact
+            MyDatabaseManager db = new MyDatabaseManager();
+            if(db.deleteContact(contactNumber)){
+                // -- go back to contacts page
+                ContactsPage panel = new ContactsPage();
+                NewWindowFrame frame = new NewWindowFrame(panel);
+                frame.setVisible(true);
+                ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
+            }else{
+                JOptionPane.showMessageDialog(this, String.format("You cannot delete this contact!"));
+            }
+
         }
         if (e.getSource() == dialBtn){
             // System.out.println("dialing "+contactName+"...");

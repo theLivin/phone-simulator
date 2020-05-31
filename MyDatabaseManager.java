@@ -248,6 +248,45 @@ public class MyDatabaseManager{
         }
     }
 
+    // Delete Contact
+    public boolean deleteContact(String phone){
+        PreparedStatement prepStmnt = null;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "DELETE FROM phonebook WHERE phone=?";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1, phone);
+            prepStmnt.execute();
+
+            return true;
+
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return false;
+            
+        }finally{
+            // release resources
+            try{
+                if(prepStmnt != null){
+                    prepStmnt.close();
+                }
+            }catch(Exception ex){
+
+            }
+        }
+    }
+
     // Call log
     // -- add call logs
     public boolean insertCallLog(String phone, String date, String time, String category){
@@ -360,7 +399,7 @@ public class MyDatabaseManager{
             do{
                 rowCount ++;
             }while(rs.next());
-            System.out.println("row count = "+rowCount);
+            // System.out.println("row count = "+rowCount);
 
             return rowCount;
 
@@ -370,6 +409,43 @@ public class MyDatabaseManager{
             System.out.println("VendorError: " + ex.getErrorCode());
 
             return 0;
+        }
+    }
+
+    // Clear call log
+    public boolean clearCallLog(){
+        PreparedStatement prepStmnt = null;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "DELETE FROM call_log";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.execute();
+
+            return true;
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return false;
+            
+        }finally{
+            // release resources
+            try{
+                if(prepStmnt != null){
+                    prepStmnt.close();
+                }
+            }catch(Exception ex){
+
+            }
         }
     }
 

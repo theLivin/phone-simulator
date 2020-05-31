@@ -18,8 +18,8 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 	public AddContact(String param) {
 		JLabel headText = new JLabel("New Contact");
 		headText.setFont(new Font("Raleway", Font.BOLD, 24));
-		headText.setForeground(Color.BLUE);
-		headText.setBounds(28, 63, 220, 40);
+		headText.setForeground(Color.DARK_GRAY);
+		headText.setBounds(28, 63, 231, 40);
 		headText.setHorizontalAlignment(SwingConstants.CENTER);
 		add(headText);
 		
@@ -46,7 +46,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		JLabel lblContact = new JLabel("Phone Number");
 		lblContact.setForeground(Color.GRAY);
 		lblContact.setFont(labelFont);
-		lblContact.setBounds(50, 329, 55, 23);
+		lblContact.setBounds(50, 329, 130, 23);
 		add(lblContact);
 		
 		numTextField.setColumns(10);
