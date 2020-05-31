@@ -59,12 +59,12 @@ public class MyDatabaseManager{
             // check if table is does not exist and create it if it does not -- call logs
             stmnt2 = conn.createStatement();
             sql = "CREATE TABLE IF NOT EXISTS call_log(" +
-                "id INTEGER," +
-                "phone VARCHAR(20) NOT NULL," +
+                "log_id INTEGER," +
+                "log_phone VARCHAR(20) NOT NULL," +
                 "date VARCHAR(255) NOT NULL," +
                 "time VARCHAR(10) NOT NULL," +
                 "category VARCHAR(10) NOT NULL," +
-                "PRIMARY KEY(id)" +
+                "PRIMARY KEY(log_id)" +
             ")";
             stmnt2.execute(sql);
             // System.out.println("call_log table created or already exists");
@@ -264,7 +264,7 @@ public class MyDatabaseManager{
             String sql;
 
             // add contact to call_log table
-            sql = "INSERT INTO call_log(phone, date, time, category) VALUES(?,?,?,?)";
+            sql = "INSERT INTO call_log(log_phone, date, time, category) VALUES(?,?,?,?)";
             prepStmnt = conn.prepareStatement(sql);
 
             prepStmnt.setString(1, phone);
@@ -310,7 +310,7 @@ public class MyDatabaseManager{
             String sql;
 
             stmnt = conn.createStatement();
-            sql = "SELECT * FROM phonebook, call_log ORDER BY call_log.id DESC";
+            sql = "SELECT * FROM call_log AS c LEFT JOIN phonebook AS p ON c.log_phone=p.phone ORDER BY c.log_id DESC";
             return stmnt.executeQuery(sql);
         
         }catch(SQLException ex){
@@ -334,7 +334,7 @@ public class MyDatabaseManager{
         try{
             String sql;
 
-            sql = "SELECT * FROM phonebook, call_log WHERE category=? ORDER BY call_log.id DESC";
+            sql = "SELECT * FROM phonebook, call_log WHERE category=? ORDER BY call_log.log_id DESC";
             prepStmnt = conn.prepareStatement(sql);
             prepStmnt.setString(1, category);
             return prepStmnt.executeQuery();

@@ -212,7 +212,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
             // Display contact list now
             if(logsList.next()){
                 do{
-                    String phone =  logsList.getString("phone");
+                    String phone =  logsList.getString("log_phone");
                     String time = logsList.getString("time");
                     String date = logsList.getString("date");
                     String category = logsList.getString("category");
