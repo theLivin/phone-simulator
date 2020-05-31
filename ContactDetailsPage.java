@@ -130,7 +130,12 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
         if (e.getSource() == msgBtn){
-            System.out.println("we'll start messaging "+contactName+" shortly");
+            // System.out.println("we'll start messaging "+contactName+" shortly");
+            // Go to messages page
+            SendMessage panel = new SendMessage(contactNumber);
+            NewWindowFrame frame = new NewWindowFrame(panel);
+            frame.setVisible(true);
+            ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
     }// <-- end actionPerformed
 

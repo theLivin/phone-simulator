@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 import java.sql.*;
+import java.security.SecureRandom;
 
 
 public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionListener, KeyListener{
@@ -12,22 +13,28 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
     private JButton homeBtn = new JButton();
     private JButton addBtn  = new JButton();
-    
     private JTextField searchBar = new JTextField("Search Contact", 20);
     private JButton searchBtn = new JButton();
     private String searchString = "";
 
-    private ArrayList<JButton> contactBtn = new ArrayList<JButton>();
+    // Panel to hold contacts
+    private JPanel contactListPanel = new JPanel();
+
+    private ArrayList<JButton> contactBtns = new ArrayList<JButton>();
 
     // contacts list to be displayed
     private ResultSet contacts; 
-
     // DB Manager object
-    MyDatabaseManager db = new MyDatabaseManager();
+    private MyDatabaseManager db = new MyDatabaseManager();
+
+    private SecureRandom randomNumbers = new SecureRandom(); // object for random numbers
 
 
     // Constructor -->
     public ContactsPage(){
+        // Change background color of parent panel
+        setBackground(new Color(0xFAFAFA));
+
         // Add contact button
         Icon addIcon = new ImageIcon(getClass().getResource("./images/icons/add.png"));
         addBtn.setBounds(15, 50, 50, 30);
@@ -59,7 +66,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         // Search Button
         Icon searchIcon = new ImageIcon(getClass().getResource("./images/icons/search.png"));
-        searchBtn.setBounds(206, 85, 50, 30);
+        searchBtn.setBounds(206, 85, 53, 30);
         searchBtn.setIcon(searchIcon);
         super.makeButtonTransparent(searchBtn, false);
         searchBtn.setFocusable(false);
@@ -68,7 +75,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         // Contacts
         JLabel label = new JLabel("Contacts");
-        label.setBounds(36, 125, 190, 20);
+        label.setBounds(26, 120, 190, 20);
         label.setFont(font);
         label.setForeground(Color.GRAY);
         add(label);
@@ -77,62 +84,104 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         showContacts();
 
+        addInnerJPanel();
+
     }// <-- end Constructor
+
+     // add panel on which list wil be written
+     public void addInnerJPanel(){
+        // Add scroll pane to inner panel
+        JScrollPane scrollPane = new JScrollPane(contactListPanel,
+        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds( 20, 145, 247, 320 );
+        scrollPane.setPreferredSize(new Dimension(160, 200));
+        scrollPane.setBorder(null);
+
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+
+        int count = db.countNumOfRowsFrom(db.fetchAllContacts());
+                
+        contactListPanel.setPreferredSize(new Dimension(600,(count*45+1) ));
+        contactListPanel.setLayout(null);
+        contactListPanel.setBackground(Color.WHITE);
+
+        add(scrollPane);
+
+    }
 
     // Show contacts on screen from param array
     public void showContacts(){
+        // stating values
+        int x = 3, y = 10, w = 224, h = 45;
+
         // Contacts List
-        int x = 26, y = 150, w = 238, h = 45;
         int i = 0;
 
         // show contacts if phonebook is not empty
         try{
-            System.out.printf("%-5s%-20s%-20s%-20s%n", "ID","NAME","PHONE","IMAGE");
-            while(contacts.next()){
-                //--show list in console
-                System.out.printf("%-5s%-20s%-20s%-20s%n",
-                contacts.getInt("id"),contacts.getString("name"),
-                contacts.getString("phone"), contacts.getString("image"));
-
-                //--show list on phone screen
-                String phone = contacts.getString("phone");
-                String name = ((contacts.getString("name")).contentEquals("")) ? phone : (contacts.getString("name"));
-                Icon image;
-
-                if(contacts.getString("image") == null)
-                    image = new ImageIcon(getClass().getResource("./images/icons/contacts-32.png"));
-                else{
-                    try{
-                        image = new ImageIcon(getClass().getResource(contacts.getString("image")));
-                    }catch(Exception exc){
-                        image = new ImageIcon(getClass().getResource("./images/icons/contacts-32.png"));
-                    }
-                }
-
-                String str = String.format("<html><b>%s</b><br>%s</html>", name, phone);
-
-                contactBtn.add(new JButton(str));
-                contactBtn.get(i).setFont(font);
-                contactBtn.get(i).setIcon(image);
-                contactBtn.get(i).setBounds(x, y, w, h);
-                contactBtn.get(i).setIconTextGap(10);
-                contactBtn.get(i).setVerticalAlignment(SwingConstants.CENTER);
-                contactBtn.get(i).setHorizontalAlignment(SwingConstants.LEFT);
-
-                contactBtn.get(i).setBackground(Color.WHITE);
-                            
-                add(contactBtn.get(i));
+            // System.out.printf("%-5s%-20s%-20s%-20s%n", "ID","NAME","PHONE","IMAGE");
+            if(contacts.next() == true){
+                do{
+                    //--show list in console
+                    // System.out.printf("%-5s%-20s%-20s%-20s%n",
+                    // contacts.getInt("id"),contacts.getString("name"),
+                    // contacts.getString("phone"), contacts.getString("image"));
     
-                // add an action listener
-                contactBtn.get(i).addActionListener(new ActionListener(){
-                    public void actionPerformed(ActionEvent e){
-                        // Go to home screen
-                        showSingleContactPage(name, phone, e);
+                    //--show list on phone screen
+                    String phone = contacts.getString("phone");
+                    String name = ((contacts.getString("name")).contentEquals("")) ? phone : (contacts.getString("name"));
+                    Icon image;
+    
+                    int num = 1 + randomNumbers.nextInt(6);
+                    String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
+    
+                    if(contacts.getString("image") == null){
+                        image = new ImageIcon(getClass().getResource(defaultImageUrl));
                     }
-                });
-                
-                i++;
-                y += h+2;
+                    else{
+                        try{
+                            image = new ImageIcon(getClass().getResource(contacts.getString("image")));
+                        }catch(Exception exc){
+                            image = new ImageIcon(getClass().getResource(defaultImageUrl));
+                        }
+                    }
+    
+                    String str = String.format("<html><b>%s</b><br>%s</html>", name, phone);
+    
+                    contactBtns.add(new JButton(str));
+                    contactBtns.get(i).setFont(font);
+                    contactBtns.get(i).setIcon(image);
+                    contactBtns.get(i).setBounds(x, y, w, h);
+                    contactBtns.get(i).setIconTextGap(10);
+                    contactBtns.get(i).setVerticalAlignment(SwingConstants.CENTER);
+                    contactBtns.get(i).setHorizontalAlignment(SwingConstants.LEFT);
+    
+                    contactBtns.get(i).setBackground(Color.WHITE);
+                                
+                    contactListPanel.add(contactBtns.get(i));
+        
+                    // add an action listener
+                    contactBtns.get(i).addActionListener(new ActionListener(){
+                        public void actionPerformed(ActionEvent e){
+                            // Show single contact page
+                            showSingleContactPage(name, phone, e);
+                        }
+                    });
+                    
+                    i++;
+                    y += h+2;
+                }while(contacts.next());// end do-while loop
+
+            }else{
+                // System.out.println("contacts list is empty");
+                JLabel nothingFound = new JLabel("Nothing Found!");
+                nothingFound.setForeground(Color.GRAY);
+                nothingFound.setHorizontalAlignment(SwingConstants.CENTER);
+                nothingFound.setVerticalAlignment(SwingConstants.CENTER);
+                nothingFound.setFont(font);
+                nothingFound.setBounds(5, 110, 235, 45);
+                contactListPanel.add(nothingFound);
             }
 
         }catch(SQLException ex){
@@ -184,6 +233,17 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
             // Search for contact whose details matches the text in the search bar
             searchString = searchBar.getText();
             System.out.println("searching for: " + searchString);
+            if(!searchString.contentEquals("")){
+                contacts = db.findContactByNameOrPhone(searchString);
+                contactListPanel.removeAll();
+                contactListPanel.revalidate();
+                showContacts();
+
+                // Change size of scroll panel
+                int count = db.countNumOfRowsFrom(db.findContactByNameOrPhone(searchString));
+                contactListPanel.setPreferredSize(new Dimension(600,(count*45+1) ));
+                contactListPanel.repaint(); // show changes made
+            }
         }
 
         if( e.getSource() == addBtn ){
@@ -197,9 +257,9 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         
     // Handle KeyListener events
     public void keyTyped(KeyEvent e){
-        char c = e.getKeyChar();
-        searchString = searchBar.getText() + c;
-        System.out.println(searchString);
+        // char c = e.getKeyChar();
+        // searchString = searchBar.getText() + c;
+        // System.out.println(searchString);
     }// <-- end keyTyped
 
     public void keyPressed(KeyEvent e){

@@ -43,7 +43,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		add(nameTextField);
 		nameTextField.setColumns(10);
 		
-		JLabel lblContact = new JLabel("Contact");
+		JLabel lblContact = new JLabel("Phone Number");
 		lblContact.setForeground(Color.GRAY);
 		lblContact.setFont(labelFont);
 		lblContact.setBounds(50, 329, 55, 23);

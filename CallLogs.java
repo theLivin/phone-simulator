@@ -4,48 +4,40 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
+import java.time.*;
+import java.security.*;
 
 
 public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListener, KeyListener{
 
     private JButton homeBtn = new JButton();
+    
+    private SecureRandom randomNumbers = new SecureRandom(); // object for random numbers
 
-    private MyDatabaseManager db = new MyDatabaseManager();
-    private ResultSet allCalls;
-    private ResultSet missedCalls;
+    // Panel to hold contacts
+    private JPanel contactListPanel = new JPanel();
 
-    String today;
+    private String today;
+    private String yesterday;
 
     // Control how events are added; make sure listeners are added only once 
-    boolean eventsAdded = false;
+    private boolean eventsAdded = false;
 
     private JPanel allPanel = new JPanel();
     private JLabel allLabel = new JLabel("All");
     private JPanel missedPanel = new JPanel();
     private JLabel missedLabel = new JLabel("Missed");
 
-    private final JPanel timePanel = new JPanel();
-    private final JPanel panel_1 = new JPanel();
-    private final JLabel lblToday = new JLabel(" Today");
-    private final JPanel missedCallPlane_1 = new JPanel();
-    private final JPanel panel_1_1 = new JPanel();
-    private final JLabel lblNewLabel_2 = new JLabel("");
-    private final JLabel lblNewLabel_1_2 = new JLabel("Akyena");
-    private final JLabel lblNewLabel_1_1_1 = new JLabel("10:20");
-    private final JPanel Recievedcallpanel = new JPanel();
-    private final JPanel panel_1_1_1 = new JPanel();
-    private final JLabel lblNewLabel_2_1 = new JLabel("");
-    private final JLabel lblNewLabel_1_2_1 = new JLabel("Robert");
-    private final JLabel lblNewLabel_1_1_1_1 = new JLabel("10:20");
-
+  
     // Constructor -->
     public CallLogs(){
         setLayout(null);
 
-        LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("E, MMM d yyyy");
-		today = dateFormat.format(now);
+        LocalDateTime now = LocalDateTime.now();
+        today = dateFormat.format(now);
+        LocalDate yestee = (LocalDate.now()).minusDays(1);
+        yesterday = dateFormat.format(yestee);
         
         showAllCalls();
         
@@ -77,7 +69,27 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
             eventsAdded = true;
         }
 
+        addInnerJPanel();    
+
     }// <-- end Constructor
+
+    // add panel on which list wil be written
+    public void addInnerJPanel(){
+        // Add scroll pane to inner panel
+        JScrollPane scrollPane = new JScrollPane(contactListPanel,
+        ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, 
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBounds( 20, 90, 247, 380 );
+        scrollPane.setPreferredSize(new Dimension(160, 200));
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+
+        contactListPanel.setLayout(null);
+        contactListPanel.setBackground(Color.WHITE);
+        add(scrollPane);
+
+        showNavigationButtons();
+    }
 
     //RECENT AND CONTACTS TAB CODES
     public void addRecAndConTab() {
@@ -155,19 +167,139 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
 
     }
 
+    // display missed calls
     public void showMissedCalls(){
-        removeAll();
-        revalidate();
-        repaint(); 
-        showNavigationButtons();
+        contactListPanel.removeAll();
+        contactListPanel.revalidate();
+        contactListPanel.repaint();
 
-        missedCalls = db.fetchSpecificCallLog("missed");
-        
         System.out.println("Missed Calls");
+        MyDatabaseManager db = new MyDatabaseManager();
+        displayCallLogs(db.fetchSpecificCallLog("missed"));
+
+        // Resize scroll bar
+        int count = db.countNumOfRowsFrom( db.fetchSpecificCallLog("missed"));
+        contactListPanel.setPreferredSize(new Dimension(247, (count*65)));
+        contactListPanel.repaint(); // show changes made
+    }
+
+    
+    // display all calls
+    public void showAllCalls() {
+        contactListPanel.removeAll();
+        contactListPanel.revalidate();
+        contactListPanel.repaint(); 
+
+        System.out.println("All Calls");
+        MyDatabaseManager db = new MyDatabaseManager();
+        displayCallLogs(db.fetchAllCallLog());
+
+        // Resize scroll bar
+        int count = db.countNumOfRowsFrom( db.fetchAllCallLog());
+        contactListPanel.setPreferredSize(new Dimension(247, (count*65)));
+        contactListPanel.repaint(); // show changes made
+     
+    }
+
+    // display call logs function
+    public void displayCallLogs(ResultSet logsList){
+        // starting values
+        int x = 10, y = 5, w = 200, h = 60;
+ 
+        // Display all call logs if it is not empty
         try{
-            while(missedCalls.next()){
-                System.out.printf("%10s%10s%10s%n", missedCalls.getString("phone"), missedCalls.getString("time"), allCalls.getString("category"));
+            
+            // Display contact list now
+            if(logsList.next()){
+                do{
+                    String phone =  logsList.getString("phone");
+                    String time = logsList.getString("time");
+                    String date = logsList.getString("date");
+                    String category = logsList.getString("category");
+                    String categoryIconUrl = "";
+
+                    String name = logsList.getString("name");
+                    name = (name.contentEquals("")) ? phone : name;
+
+                    if(category.contentEquals("missed")){
+                        categoryIconUrl = "./images/icons/missedCall.png";
+                    }
+                    else if(category.contentEquals("dialed")){
+                        categoryIconUrl = "./images/icons/callout.png";
+                    }
+    
+                    int num = 1 + randomNumbers.nextInt(6);
+                    String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
+    
+                    Icon contactImage = new ImageIcon(getClass().getResource(defaultImageUrl));
+                    
+    
+                    // System.out.printf("%10s%10s%10s%n", phone, time, category);
+                    Icon categoryIcon = new ImageIcon(ContactsPage.class.getResource(categoryIconUrl));
+
+                    // making the line under the Calendar label
+                    JSeparator separator = new JSeparator();
+                    separator.setBackground(Color.DARK_GRAY);
+                    separator.setBounds(x , y, w, 2);
+                    contactListPanel.add(separator);
+                    y += 4;
+
+                    // outer label for name/phone                    
+                    JLabel contactLog = new JLabel();
+                    contactLog.setText(String.format("%s",name));
+                    contactLog.setIcon(contactImage);
+                    contactLog.setForeground(Color.RED);
+                    contactLog.setFont(new Font("Raleway", Font.PLAIN, 18));
+                    contactLog.setHorizontalAlignment(SwingConstants.LEFT);
+                    contactLog.setVerticalAlignment(SwingConstants.TOP);
+                    contactLog.setHorizontalTextPosition(SwingConstants.RIGHT);
+                    contactLog.setVerticalTextPosition(SwingConstants.TOP);
+                    contactLog.setIconTextGap(22);
+                    contactLog.setBounds(x, y, w, h);
+                    contactLog.setLayout(null);
+
+                    // inner label for icon and time
+                    String day = date;
+                    String innerStr = String.format("<html>%s<br>%s</html>", day, time);
+                    
+                    if(today.compareTo(date) == 0){
+                        innerStr = String.format("Today, %s", time);
+                    }
+                    else if(yesterday.compareTo(date) == 0){
+                        innerStr = String.format("Yesterday, %s", time);;
+                    }
+
+                    // inner label
+                    JButton inner = new JButton(innerStr, categoryIcon);
+                    super.makeButtonTransparent(inner, false);
+                    inner.setBounds(40, 26, 180, 30);
+                    inner.setFocusable(false);
+                    inner.setFont(new Font("Raleway", Font.PLAIN, 12));
+                    inner.setHorizontalAlignment(SwingConstants.LEFT);
+                    
+                    contactLog.add(inner);
+                    contactListPanel.add(contactLog);
+                    y = y+h+1;
+
+                    // add an action listener
+                    contactLog.addMouseListener(new MouseAdapter() {
+                        public void mouseClicked(MouseEvent e) {
+                            makeCall(phone);
+                        }
+                    });
+                    
+                }while(logsList.next());// end do while loop
+
+            }else{
+                JLabel nothingFound = new JLabel("Nothing Found!");
+                nothingFound.setForeground(Color.GRAY);
+                nothingFound.setHorizontalAlignment(SwingConstants.CENTER);
+                nothingFound.setVerticalAlignment(SwingConstants.CENTER);
+                nothingFound.setFont(new Font("Raleway", Font.PLAIN, 14));
+                nothingFound.setBounds(5, 110, 235, 45);
+                contactListPanel.add(nothingFound);     
             }
+            
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
             System.out.println(ex.getSQLState());
@@ -175,146 +307,14 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         }
     }
 
-    
-    
-    public void showAllCalls() {
-        removeAll();
-        revalidate();
-        repaint(); 
-        showNavigationButtons();
-
-        allCalls = db.fetchAllCallLog();
-
-        System.out.println("All Calls");
-        try{
-            while(allCalls.next()){
-                System.out.printf("%10s%10s%10s%n", allCalls.getString("phone"), allCalls.getString("time"), allCalls.getString("category"));
-            }
-        }catch(SQLException ex){
-            System.out.println(ex.getMessage());
-            System.out.println(ex.getSQLState());
-            System.out.println("VendorError: " + ex.getErrorCode());
-        }
-
-        
-        // timePanel.setLayout(null);
-        // timePanel.setForeground(Color.BLACK);
-        // timePanel.setBackground(Color.BLACK);
-        // timePanel.setBounds(30, 90, 220, 24);
-        // add(timePanel);
-
-
-        // panel_1.setLayout(null);
-        // // panel_1.setBackground(Color.WHITE);
-        // // panel_1.setBounds(0, 0, 265, 21);
-        
-        // timePanel.add(panel_1);
-        // lblToday.setFont(new Font("Raleway", Font.PLAIN, 16));
-        // lblToday.setForeground(Color.GRAY);
-        // lblToday.setBounds(0, 0, 171, 21);
-        
-        // panel_1.add(lblToday);
-
-        //num 1 for all logs 2 for only missed call 
-        // if(num == 1) {
-        	// missedCallPlane_1.setLayout(null);
-            // missedCallPlane_1.setForeground(Color.BLACK);
-            // missedCallPlane_1.setBackground(Color.BLACK);
-            // missedCallPlane_1.setBounds(31, 115, 218, 60);
-            
-            // add(missedCallPlane_1);
-            // panel_1_1.setLayout(null);
-            // panel_1_1.setBackground(Color.WHITE);
-            // panel_1_1.setBounds(0, 0, 218, 59);
-            
-            // missedCallPlane_1.add(panel_1_1);
-            // lblNewLabel_2.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/contacts-32.png")));
-            // lblNewLabel_2.setBounds(12, 10, 43, 33);
-            
-            // panel_1_1.add(lblNewLabel_2);
-            // lblNewLabel_1_2.setFont(new Font("Raleway", Font.PLAIN, 20));
-            // lblNewLabel_1_2.setBounds(84, 3, 132, 24);
-            
-            // panel_1_1.add(lblNewLabel_1_2);
-            // lblNewLabel_1_1_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/missedCall.png")));
-            // lblNewLabel_1_1_1.setForeground(Color.RED);
-            // lblNewLabel_1_1_1.setFont(new Font("Raleway", Font.PLAIN, 16));
-            // lblNewLabel_1_1_1.setBounds(84, 28, 132, 24);
-            
-            // panel_1_1.add(lblNewLabel_1_1_1);
-            
-            // Recievedcallpanel.setLayout(null);
-            // Recievedcallpanel.setForeground(Color.BLACK);
-            // Recievedcallpanel.setBackground(Color.BLACK);
-            // Recievedcallpanel.setBounds(31, 175, 218, 60);
-            
-            // add(Recievedcallpanel);
-            // panel_1_1_1.setLayout(null);
-            // panel_1_1_1.setBackground(Color.WHITE);
-            // panel_1_1_1.setBounds(0, 0, 218, 59);
-            
-            // Recievedcallpanel.add(panel_1_1_1);
-            // lblNewLabel_2_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/contacts-32.png")));
-            // lblNewLabel_2_1.setBounds(12, 10, 43, 33);
-            
-            // panel_1_1_1.add(lblNewLabel_2_1);
-            // lblNewLabel_1_2_1.setFont(new Font("Raleway", Font.PLAIN, 20));
-            // lblNewLabel_1_2_1.setBounds(84, 3, 132, 24);
-            
-            // panel_1_1_1.add(lblNewLabel_1_2_1);
-            // lblNewLabel_1_1_1_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/callout.png")));
-            // lblNewLabel_1_1_1_1.setForeground(SystemColor.textHighlight);
-            // lblNewLabel_1_1_1_1.setFont(new Font("Raleway", Font.PLAIN, 16));
-            // lblNewLabel_1_1_1_1.setBounds(84, 28, 132, 24);
-            
-            // panel_1_1_1.add(lblNewLabel_1_1_1_1);
-          
-        // }
-        
-    //    if(num == 2) {
-    	//    missedPanel.setBackground(SystemColor.controlDkShadow);
-       	//    allPanel.setBackground(Color.BLACK);   
-        //    allLabel.addMouseListener(new MouseAdapter() {
-        //    	@Override
-        //    	public void mouseClicked(MouseEvent e) {
-        //    		 missedPanel.setBackground(Color.black);
-        //    		 allPanel.setBackground(SystemColor.controlDkShadow);
-        //    		 removeAll();
-  		// 	     revalidate();
-  		// 	     repaint();
-  		// 	    addRecAndConTab();
-  		// 	    showAllLogs(1);
-        //    	}
-        //    });
-           
-        //    missedCallPlane_1.setLayout(null);
-        //    missedCallPlane_1.setForeground(Color.BLACK);
-        //    missedCallPlane_1.setBackground(Color.BLACK);
-        //    missedCallPlane_1.setBounds(31, 115, 218, 60);
-           
-        //    add(missedCallPlane_1);
-        //    panel_1_1.setLayout(null);
-        //    panel_1_1.setBackground(Color.WHITE);
-        //    panel_1_1.setBounds(0, 0, 218, 59);
-           
-        //    missedCallPlane_1.add(panel_1_1);
-        //    lblNewLabel_2.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/contacts-32.png")));
-        //    lblNewLabel_2.setBounds(12, 10, 43, 33);
-           
-        //    panel_1_1.add(lblNewLabel_2);
-        //    lblNewLabel_1_2.setFont(new Font("Raleway", Font.PLAIN, 20));
-        //    lblNewLabel_1_2.setBounds(84, 3, 132, 24);
-           
-        //    panel_1_1.add(lblNewLabel_1_2);
-        //    lblNewLabel_1_1_1.setIcon(new ImageIcon(ContactsPage.class.getResource("/images/icons/missedCall.png")));
-        //    lblNewLabel_1_1_1.setForeground(Color.RED);
-        //    lblNewLabel_1_1_1.setFont(new Font("Raleway", Font.PLAIN, 16));
-        //    lblNewLabel_1_1_1.setBounds(84, 28, 132, 24);
-           
-        //    panel_1_1.add(lblNewLabel_1_1_1);
-        // }
-
-             
+    // make a call
+    public void makeCall(String contactNumber){
+        // System.out.println("dialing "+contactName+"...");
+        PhoneDial panel = new PhoneDial();
+        panel.setTextFieldText(contactNumber);
+        NewWindowFrame frame = new NewWindowFrame(panel);
+        frame.setVisible(true);
+        ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
     }
 
 

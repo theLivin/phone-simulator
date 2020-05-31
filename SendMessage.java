@@ -2,82 +2,113 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import java.security.SecureRandom;
 
 public class SendMessage extends PhonePresetWithNoWallpaper implements ActionListener{
-	private JTextField textField;
-	private JButton homeBtn = new JButton();
+	
+	private JTextField textField = new JTextField();// Message Typing Area
+	private JButton sentMessageArea = new JButton();// Send Message Area
+	private JButton homeBtn = new JButton();// Home Button
+	private JButton btnSend = new JButton();// Send Button
+	private String recipient;// Message Recipient
+	private JTextField lblContactName = new JTextField();// Recipient label under contact image
+
+	private SecureRandom randomNumbers = new SecureRandom(); // object for random numbers
+
 
 	/**
 	 * Create the panel.
 	 */
 
-	public SendMessage() {
+	public SendMessage(String recipient) {
 		setAutoscrolls(true);
-		
-		textField = new JTextField();
+
+		int num = 1 + randomNumbers.nextInt(6);
+        String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
+
+		// Contacts Icon		
+		JLabel lblContacImage = new JLabel("");
+		lblContacImage.setIcon(new ImageIcon(getClass().getResource(defaultImageUrl)));
+		lblContacImage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblContacImage.setBounds(123, 40, 40, 40);
+		add(lblContacImage);
+
+		if(recipient.contentEquals("")){
+			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);
+			lblContactName.setFont(new Font("Raleway", Font.PLAIN, 12));
+			lblContactName.setForeground(Color.DARK_GRAY);
+			lblContactName.setBounds(78, 80, 130, 18);
+			add(lblContactName);
+		}else {
+			JLabel lblContactName = new JLabel(recipient);
+			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);
+			lblContactName.setFont(new Font("Raleway", Font.PLAIN, 12));
+			lblContactName.setForeground(Color.DARK_GRAY);
+			lblContactName.setBounds(43, 80, 200, 18);
+			add(lblContactName);
+		}
+
+		// Message Area		
 		textField.setAutoscrolls(false);
 		textField.setActionCommand("");
 		textField.setBorder(new BevelBorder(BevelBorder.RAISED, Color.LIGHT_GRAY, Color.GRAY, null, null));
 		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		textField.setBounds(22, 384, 157, 40);
+		textField.setFont(new Font("Raleway", Font.PLAIN, 18));
+		textField.setBounds(26, 450, 189, 40);
 		add(textField);
 		textField.setColumns(10);
-		
-		JLabel label = new JLabel("");
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setHorizontalAlignment(SwingConstants.RIGHT);
-		label.setBounds(71, 286, 185, 46);
-		add(label);
-		
 
-		JLabel label2 = new JLabel("");
-		label2.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label2.setHorizontalAlignment(SwingConstants.RIGHT);
-		label2.setBounds(71, 205, 185, 46);
-		add(label2);
-		
-		
-		JButton btnSend = new JButton("Send");
+		// Send Button		
+		btnSend.setIcon(new ImageIcon(getClass().getResource("./images/icons/send.png")));
 		btnSend.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String Text;
-				Text= textField.getText();
-				label.setText(Text);
-			  //  label2.setText(Text);
+				String textMsg = textField.getText();
+				sendNewMessage(textMsg);
 			}
 		});
-		btnSend.setBounds(189, 384, 63, 40);
+		btnSend.setBounds(215, 450, 40, 40);
+		btnSend.setVerticalAlignment(SwingConstants.CENTER);
+		btnSend.setHorizontalAlignment(SwingConstants.CENTER);
+		// btnSend.setFont(new Font("Raleway", Font.PLAIN, 12));
 		btnSend.setFocusable(false);
+		super.makeButtonTransparent(btnSend, false);
 		add(btnSend);
-		
-		JLabel lblWriteMessage = new JLabel("Write Message");
-		lblWriteMessage.setBackground(Color.LIGHT_GRAY);
-		lblWriteMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblWriteMessage.setFont(new Font("Tahoma", Font.BOLD, 24));
-		lblWriteMessage.setForeground(Color.BLUE);
-		lblWriteMessage.setBounds(22, 69, 232, 40);
-		add(lblWriteMessage);
 
-		// Home Button
+		
+		// Home Bar
 		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
 		homeBtn.setIcon(homebar);
         homeBtn.setForeground(Color.BLUE);
         homeBtn.setBounds(75, 532, 131, 10);
         homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
-		makeButtonTransparent(homeBtn, false);
+		super.makeButtonTransparent(homeBtn, false);
 		homeBtn.setFocusable(false);
         add(homeBtn);
 		homeBtn.addActionListener(this);			
 
 	}
 
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
 
-	// Make a button transparent
-    public void makeButtonTransparent(JButton btn, boolean visibleBorder){
-        btn.setOpaque(false);
-        btn.setContentAreaFilled(false);
-        btn.setBorderPainted(visibleBorder);
-    }// <-- end makeButtonTransparent
+		sentMessageArea.setHorizontalTextPosition(SwingConstants.LEFT);
+		sentMessageArea.setHorizontalAlignment(SwingConstants.LEFT);
+		sentMessageArea.setBounds(71, 110, 185, 250);
+		sentMessageArea.setFont(new Font("Raleway", Font.PLAIN, 16));
+		sentMessageArea.setBackground(Color.GREEN);
+		sentMessageArea.setForeground(Color.WHITE);
+		add(sentMessageArea);
+		
+	}
+
+	public void sendNewMessage(String msg){
+		if(!msg.contentEquals("")){
+			String newText = String.format("<html>%s<br>%s</br>",sentMessageArea.getText(),msg);
+			sentMessageArea.setText(newText);
+			textField.setText("");			
+		}
+	}
+
 
     // Handle ActionListener events
     public void actionPerformed(ActionEvent e){

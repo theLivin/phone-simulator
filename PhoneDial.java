@@ -132,13 +132,13 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 				x = xi;
 				y = y+h+3;
 			}else{
-				x = x+w+4;
+				x = x+w+2;
 			}
 			
 		}
 
 		// Change x
-		x = x + w + 4;
+		x = x + w + 2;
 
 		// Call button		
 		ImageIcon img1 = new ImageIcon(getClass().getResource("./images/dialpad/" + "callButton.png"));
@@ -196,6 +196,10 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
         });
         add(contactsLabel);   
         
+	}
+
+	public void setTextFieldText(String txt){
+		textField.setText(txt);
 	}
 	
 	// Haddle action event
@@ -270,12 +274,11 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 			}
 
 			if(btn == "message"){
-				SendMessage panel = new SendMessage();
+				SendMessage panel = new SendMessage(msg);
 				NewWindowFrame frame = new NewWindowFrame(panel);
 				frame.setVisible(true);
 				((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
-				// TODO: let user be able to send message to typed number
-			}			
+			}
 
 		}
 	}

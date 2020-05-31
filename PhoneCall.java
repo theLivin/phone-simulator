@@ -30,6 +30,7 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		String date = dateFormat.format(now);
 		// -- finally add call log
 		db.insertCallLog(param, date, time, "dialed");
+		// db.insertCallLog(param, date, time, "missed");
 
 		// Check if contact is saved and display name instead of number
 		String name = db.findContact(param);

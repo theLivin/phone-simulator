@@ -24,12 +24,10 @@ import cambodia.raven.DateChooser;
 public class CalendarPanel extends PhonePresetWithNoWallpaper  implements ActionListener{
 	
 	// Variables for color of bubbles
-	private Color BUBBLE3 = new Color(239, 243, 198, 70);
     private Color BUBBLE2 = new Color(239, 243, 198, 140);
     private Color BUBBLE1 = new Color(239, 243, 198, 160);
     private Color SHADOW1 = new Color(23, 31, 42, 80);
     private Color SHADOW2 = new Color(23, 31, 42, 120);
-    private Color SHADOW3 = new Color(23, 31, 42, 200);
 
     private JButton homeBtn = new JButton();
     private BufferedImage iphone;
@@ -72,13 +70,13 @@ public class CalendarPanel extends PhonePresetWithNoWallpaper  implements Action
     public void addcalendarlabel() {
         JLabel lblCalendar = new JLabel("CALENDAR");
         lblCalendar.setForeground(new Color(0, 0, 51));
-        lblCalendar.setFont(new Font("Lucida Sans Unicode", Font.BOLD | Font.ITALIC, 13));
+        lblCalendar.setFont(new Font("Raleway", Font.BOLD | Font.ITALIC, 13));
         lblCalendar.setIcon(new ImageIcon(CalendarPanel.class.getResource("/images/icons/interface.png")));
         lblCalendar.setBounds(25, 62, 215, 35);
         add(lblCalendar);
         lblCalendar.setForeground(Color.DARK_GRAY);
 
-        // makinf the line under the Calendar label
+        // making the line under the Calendar label
         JSeparator separator = new JSeparator();
         separator.setBackground(Color.BLACK);
         separator.setBounds(26, 99, 235, 5);

@@ -4,9 +4,7 @@ import java.sql.*;
 
 public class MyDatabaseManager{
     private Connection conn = null;
-    private Statement stmnt = null;
-    private PreparedStatement prepStmnt = null;
-    private ResultSet res = null;
+    
 
     // Connect to database
     private void connect(){
@@ -35,6 +33,9 @@ public class MyDatabaseManager{
 
     // Initialise database with tables if no table exists -- create tables
     private void initialise(){
+        Statement stmnt1 = null;
+        Statement stmnt2 = null;
+        Statement stmnt3 = null;
         // connect if not connected
         if(conn == null){
             connect();
@@ -44,7 +45,7 @@ public class MyDatabaseManager{
             String sql;
 
             // check if table is does not exist and create it if it does not -- contact
-            stmnt = conn.createStatement();
+            stmnt1 = conn.createStatement();
             sql = "CREATE TABLE IF NOT EXISTS phonebook(" +
                 "id INTEGER," +
                 "name VARCHAR(20)," +
@@ -52,11 +53,11 @@ public class MyDatabaseManager{
                 "image VARCHAR(255)," +
                 "PRIMARY KEY(id)" +
             ")";
-            stmnt.execute(sql);
+            stmnt1.execute(sql);
             // System.out.println("contact table created or already exists");
 
             // check if table is does not exist and create it if it does not -- call logs
-            stmnt = conn.createStatement();
+            stmnt2 = conn.createStatement();
             sql = "CREATE TABLE IF NOT EXISTS call_log(" +
                 "id INTEGER," +
                 "phone VARCHAR(20) NOT NULL," +
@@ -65,11 +66,11 @@ public class MyDatabaseManager{
                 "category VARCHAR(10) NOT NULL," +
                 "PRIMARY KEY(id)" +
             ")";
-            stmnt.execute(sql);
+            stmnt2.execute(sql);
             // System.out.println("call_log table created or already exists");
 
             // check if table is does not exist and create it if it does not -- message
-            stmnt = conn.createStatement();
+            stmnt3 = conn.createStatement();
             sql = "CREATE TABLE IF NOT EXISTS message(" +
                 "id INTEGER," +
                 "body VARCHAR(255) NOT NULL," +
@@ -78,7 +79,7 @@ public class MyDatabaseManager{
                 "receiver VARCHAR(10)," +
                 "PRIMARY KEY(id)" +
             ")";
-            stmnt.execute(sql);
+            stmnt3.execute(sql);
             // System.out.println("message table created or already exists");
 
 
@@ -88,13 +89,28 @@ public class MyDatabaseManager{
             System.out.println("VendorError: " + ex.getErrorCode());
 
         }finally{
-            releaseResources();
+            // release resources
+            try{
+                if(stmnt1 != null){
+                    stmnt1.close();
+                }
+                if(stmnt2 != null){
+                    stmnt2.close();
+                }
+                if(stmnt3 != null){
+                    stmnt3.close();
+                }
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
     // Phonebook
     // -- insert into contacts table
     public boolean insertContact(String name, String phone, String image){
+        PreparedStatement prepStmnt = null;
+
         boolean status = false;
 
         // connect if not connected
@@ -129,7 +145,14 @@ public class MyDatabaseManager{
             status = false;
 
         }finally{
-            releaseResources();
+            // release resources
+            try{
+                if(prepStmnt !=null){
+                    prepStmnt.close();
+                }
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+            }
         }
 
         return status;
@@ -137,6 +160,9 @@ public class MyDatabaseManager{
 
     // -- read from contacts table
     public ResultSet fetchAllContacts(){
+        Statement stmnt = null;
+        ResultSet res = null;
+
         // connect if not connected
         if(conn == null){
             connect();
@@ -158,13 +184,13 @@ public class MyDatabaseManager{
 
             return null;
         }
-
     }
 
     // -- find contact
     public String findContact(String phone){
-        // find contact with phone number from phonebook table
-        String name = null;
+        // find contact with phone number from phonebook table and return name
+        PreparedStatement prepStmnt = null;
+        ResultSet res = null;
 
         // connect if not connected
         if(conn == null){
@@ -179,23 +205,54 @@ public class MyDatabaseManager{
             prepStmnt.setString(1, phone);
             res = prepStmnt.executeQuery();
 
-            name = res.getString("name");
+            String name = res.getString("name");
+
+            if(!name.contentEquals(""))
+                return name;
+            else
+                return "";
 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
             System.out.println(ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
 
-        }finally{
-            releaseResources();
+            return "";
+        }
+    }
+
+    // Search for contact by name or phone
+    public ResultSet findContactByNameOrPhone(String arg){
+        PreparedStatement prepStmnt = null;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
         }
 
-        return name;
+        try{
+            String sql;
+
+            sql = "SELECT * FROM phonebook WHERE phone=? OR name=?";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1, arg);
+            prepStmnt.setString(2, arg);
+            return prepStmnt.executeQuery();
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return null;
+        }
     }
 
     // Call log
     // -- add call logs
     public boolean insertCallLog(String phone, String date, String time, String category){
+        PreparedStatement prepStmnt = null;
+
         boolean status = false;
 
         // connect if not connected
@@ -219,7 +276,7 @@ public class MyDatabaseManager{
 
             status = true;
 
-            System.out.printf("call log entry created{phone: %s, date: %s, time: %s, cateory: %s} %n", phone, date, time, category);
+            // System.out.printf("call log entry created{phone: %s, date: %s, time: %s, cateory: %s} %n", phone, date, time, category);
 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -227,16 +284,23 @@ public class MyDatabaseManager{
             System.out.println("VendorError: " + ex.getErrorCode());
 
             status = false;
-
         }finally{
-            releaseResources();
+            try{
+                // release resources
+                if(prepStmnt !=null){
+                    prepStmnt.close();
+                }
+            }catch(SQLException ex){
+                System.out.println(ex.getMessage());
+            }
         }
-
         return status;
     }
 
     // -- fetch call history
     public ResultSet fetchAllCallLog(){
+        Statement stmnt = null;
+
         // connect if not connected
         if(conn == null){
             connect();
@@ -246,10 +310,8 @@ public class MyDatabaseManager{
             String sql;
 
             stmnt = conn.createStatement();
-            sql = "SELECT * FROM call_log ORDER BY time DESC";
-            res = stmnt.executeQuery(sql);
-
-            return res;
+            sql = "SELECT * FROM phonebook, call_log ORDER BY call_log.id DESC";
+            return stmnt.executeQuery(sql);
         
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -258,11 +320,12 @@ public class MyDatabaseManager{
 
             return null;
         }
-
     }
     
     // -- fetch a specific category of call logs
     public ResultSet fetchSpecificCallLog(String category){
+        PreparedStatement prepStmnt = null;
+
         // connect if not connected
         if(conn == null){
             connect();
@@ -271,7 +334,7 @@ public class MyDatabaseManager{
         try{
             String sql;
 
-            sql = "SELECT * FROM call_log WHERE category=? ORDER BY id DESC";
+            sql = "SELECT * FROM phonebook, call_log WHERE category=? ORDER BY call_log.id DESC";
             prepStmnt = conn.prepareStatement(sql);
             prepStmnt.setString(1, category);
             return prepStmnt.executeQuery();
@@ -285,28 +348,31 @@ public class MyDatabaseManager{
         }
     }
 
-
-
-
-    // Release resources
-    private void releaseResources(){
+    // Count number of rows returned from result set
+    public int countNumOfRowsFrom(ResultSet rs){
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+        int rowCount = 0;
+        
         try{
-           if(conn != null){
-            //    conn.close();
-           }
-           if(stmnt != null){
-               stmnt.close();
-           }
-           if(res != null){
-            //    res.close();
-           }
-           if(prepStmnt !=null){
-               prepStmnt.close();
-           }
-       }catch(SQLException ex){
-           System.out.println(ex.getMessage());
-       }
-   }
+            do{
+                rowCount ++;
+            }while(rs.next());
+            System.out.println("row count = "+rowCount);
+
+            return rowCount;
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return 0;
+        }
+    }
+
 
 
 
