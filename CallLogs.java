@@ -219,7 +219,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
                     String categoryIconUrl = "";
 
                     String name = logsList.getString("name");
-                    name = (name.contentEquals("")) ? phone : name;
+                    name = (name == null || name.contentEquals("")) ? phone : name;
 
                     if(category.contentEquals("missed")){
                         categoryIconUrl = "./images/icons/missedCall.png";
