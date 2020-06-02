@@ -34,8 +34,6 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 		lblContactImage.setFocusable(false);
 		add(lblContactImage);
 
-		lblContactName.setFocusable(false);
-
 		if(recipient.contentEquals("")){
 			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);
 			lblContactName.setFont(new Font("Raleway", Font.PLAIN, 12));
@@ -52,6 +50,7 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 			lblContactName.setFont(new Font("Raleway", Font.PLAIN, 12));
 			lblContactName.setForeground(Color.DARK_GRAY);
 			lblContactName.setBounds(43, 80, 200, 18);
+			lblContactName.setFocusable(false);
 			add(lblContactName);
 		}
 
