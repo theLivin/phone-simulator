@@ -40,7 +40,11 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 			lblContactName.setBounds(78, 80, 130, 18);
 			add(lblContactName);
 		}else {
-			JLabel lblContactName = new JLabel(recipient);
+			// Check if contact is saved and display name instead of number
+			MyDatabaseManager db = new MyDatabaseManager();
+			String name = db.findContact(recipient);
+			String param = (name == null || (name.contentEquals(""))) ? recipient : name;
+			JLabel lblContactName = new JLabel(param);
 			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);
 			lblContactName.setFont(new Font("Raleway", Font.PLAIN, 12));
 			lblContactName.setForeground(Color.DARK_GRAY);
