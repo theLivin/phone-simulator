@@ -47,6 +47,7 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         
         clock.setFont(new Font("Raleway", Font.PLAIN, 12));
         clock.setBounds(40, 15, 100, size.height);
+        clock.setBackground(null);
 
         add(clock);
        

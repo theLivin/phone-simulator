@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDateTime;
-
+import java.security.*;
 
 public class PhoneCall extends PhonePresetWithNoWallpaper {
 	private static String iconsRootUrl = "./images/dialpad/";
@@ -13,6 +13,8 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		{"mute", "keypad", "speaker", "add call", "FaceTime", "contacts"}, 
 		{"mute.png", "keypad-white.png", "speaker.png", "plus.png", "facetime-2.png", "contact-filled-white.png"}
 	};
+
+	private SecureRandom randomNumbers = new SecureRandom(); // object for random numbers
 	
 	private MyDatabaseManager db = new MyDatabaseManager();
 
@@ -29,8 +31,8 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("E, MMM d yyyy");
 		String date = dateFormat.format(now);
 		// -- finally add call log
-		db.insertCallLog(param, date, time, "dialed");
-		// db.insertCallLog(param, date, time, "missed");
+		String[] calls = {"missed", "dialed"};
+		db.insertCallLog(param, date, time, calls[randomNumbers.nextInt(2)]);
 
 		// Check if contact is saved and display name instead of number
 		String name = db.findContact(param);

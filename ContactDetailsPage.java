@@ -70,7 +70,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // -- load dial icon
         Icon dial = new ImageIcon(getClass().getResource("./images/icons/dial.png"));
 
-        int x = 26, y = 120, w = 238, h = 150;
+        int x = 26, y = 140, w = 238, h = 150;
 
         // -- name button
         nameLabel = new JLabel(name, user, JLabel.CENTER);
@@ -79,10 +79,11 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         nameLabel.setIconTextGap(10);
         nameLabel.setVerticalTextPosition(JLabel.BOTTOM);
         nameLabel.setHorizontalTextPosition(JLabel.CENTER);
+        nameLabel.setForeground(Color.DARK_GRAY);
         add(nameLabel);
 
         // -- dial button
-        y = y+h+10;
+        y = y+h+15;
         h = 35;
         dialBtn = new JButton(number, dial);
         dialBtn.setFont(font);

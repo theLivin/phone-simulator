@@ -23,7 +23,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		headText.setHorizontalAlignment(SwingConstants.CENTER);
 		add(headText);
 		
-		ImageIcon imgContactImage = new ImageIcon(getClass().getResource("./images/icons/camera.png"));
+		ImageIcon imgContactImage = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
 		JButton contactImage = new JButton(imgContactImage);
 		contactImage.setBounds(50, 114, 176, 143);
 		contactImage.setAlignmentX(SwingConstants.CENTER);

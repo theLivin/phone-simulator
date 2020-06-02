@@ -316,6 +316,7 @@ public class MyDatabaseManager{
             status = true;
 
             // System.out.printf("call log entry created{phone: %s, date: %s, time: %s, cateory: %s} %n", phone, date, time, category);
+            System.out.println("its a "+category+" call!");
 
         }catch(SQLException ex){
             System.out.println(ex.getMessage());
@@ -373,7 +374,7 @@ public class MyDatabaseManager{
         try{
             String sql;
 
-            sql = "SELECT * FROM phonebook, call_log WHERE category=? ORDER BY call_log.log_id DESC";
+            sql = "SELECT * FROM call_log AS c LEFT JOIN phonebook AS p ON c.log_phone=p.phone WHERE category=? ORDER BY c.log_id DESC";
             prepStmnt = conn.prepareStatement(sql);
             prepStmnt.setString(1, category);
             return prepStmnt.executeQuery();

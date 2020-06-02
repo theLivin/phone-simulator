@@ -184,7 +184,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         contactListPanel.revalidate();
         contactListPanel.repaint();
 
-        System.out.println("Missed Calls");
+        // System.out.println("Missed Calls");
         MyDatabaseManager db = new MyDatabaseManager();
         displayCallLogs(db.fetchSpecificCallLog("missed"));
 
@@ -201,7 +201,7 @@ public class CallLogs extends PhonePresetWithNoWallpaper implements ActionListen
         contactListPanel.revalidate();
         contactListPanel.repaint(); 
 
-        System.out.println("All Calls");
+        // System.out.println("All Calls");
         MyDatabaseManager db = new MyDatabaseManager();
         displayCallLogs(db.fetchAllCallLog());
 

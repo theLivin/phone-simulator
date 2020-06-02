@@ -96,7 +96,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
             btnX += btnW;
         }
 
-        clock.addActionListener(this);
+        // clock.addActionListener(this);
         
     }
 

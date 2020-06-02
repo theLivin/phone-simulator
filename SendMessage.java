@@ -27,11 +27,14 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
         String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
 
 		// Contacts Icon		
-		JLabel lblContacImage = new JLabel("");
-		lblContacImage.setIcon(new ImageIcon(getClass().getResource(defaultImageUrl)));
-		lblContacImage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblContacImage.setBounds(123, 40, 40, 40);
-		add(lblContacImage);
+		JLabel lblContactImage = new JLabel("");
+		lblContactImage.setIcon(new ImageIcon(getClass().getResource(defaultImageUrl)));
+		lblContactImage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblContactImage.setBounds(123, 40, 40, 40);
+		lblContactImage.setFocusable(false);
+		add(lblContactImage);
+
+		lblContactName.setFocusable(false);
 
 		if(recipient.contentEquals("")){
 			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -52,13 +55,15 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 			add(lblContactName);
 		}
 
-		// Message Area		
+		// Message Area -- where the user types the message	
 		textField.setAutoscrolls(false);
 		textField.setActionCommand("");
-		textField.setBorder(new BevelBorder(BevelBorder.RAISED, Color.LIGHT_GRAY, Color.GRAY, null, null));
+		// textField.setBorder(new BevelBorder(BevelBorder.RAISED, Color.LIGHT_GRAY, Color.GRAY, null, null));
+		textField.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
+		textField.setOpaque(false);
 		textField.setHorizontalAlignment(SwingConstants.LEFT);
-		textField.setFont(new Font("Raleway", Font.PLAIN, 18));
-		textField.setBounds(26, 450, 189, 40);
+		textField.setFont(new Font("Raleway", Font.PLAIN, 16));
+		textField.setBounds(29, 473, 189, 35);
 		add(textField);
 		textField.setColumns(10);
 
@@ -70,7 +75,7 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 				sendNewMessage(textMsg);
 			}
 		});
-		btnSend.setBounds(215, 450, 40, 40);
+		btnSend.setBounds(218, 473, 34, 34);
 		btnSend.setVerticalAlignment(SwingConstants.CENTER);
 		btnSend.setHorizontalAlignment(SwingConstants.CENTER);
 		// btnSend.setFont(new Font("Raleway", Font.PLAIN, 12));
@@ -95,13 +100,18 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
 
+		// area to hold typed messages
 		sentMessageArea.setHorizontalTextPosition(SwingConstants.LEFT);
 		sentMessageArea.setHorizontalAlignment(SwingConstants.LEFT);
 		sentMessageArea.setBounds(71, 110, 185, 250);
 		sentMessageArea.setFont(new Font("Raleway", Font.PLAIN, 16));
-		sentMessageArea.setBackground(Color.GREEN);
-		sentMessageArea.setForeground(Color.WHITE);
+		sentMessageArea.setBackground(Color.LIGHT_GRAY);
+		sentMessageArea.setForeground(Color.BLACK);
 		add(sentMessageArea);
+
+		// draw round area to hold message typing area and send button
+		g.setColor(new Color(0x4DD868));
+        g.drawRoundRect(26, 470, 235, 40, 30, 30);
 		
 	}
 
