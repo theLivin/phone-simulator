@@ -33,7 +33,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     // Constructor -->
     public ContactsPage(){
         // Change background color of parent panel
-        setBackground(new Color(0xFAFAFA));
+        setBackground(new Color(0xFCE8DF));
 
         // Add contact button
         Icon addIcon = new ImageIcon(getClass().getResource("./images/icons/add.png"));

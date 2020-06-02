@@ -28,7 +28,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
 
         // Create mat for clock to on
         g.setColor(new Color(82, 97, 107, 160)); // rgba , a => transparency(alpha)
-        g.fillRoundRect(26, 135, 235, 100, 30, 30);
+        g.fillRoundRect(26, 185, 235, 100, 30, 30);
 
         // Get system time
         DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -41,7 +41,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
        
         clock.setFont(new Font("Raleway", Font.PLAIN, 72));
         clock.setForeground(Color.WHITE);
-        clock.setBounds(26, 125, 235, 105);
+        clock.setBounds(26, 175, 235, 105);
 
         // -- make clock button transparent
         clock.setOpaque(false);
