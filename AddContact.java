@@ -1,19 +1,24 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class AddContact extends PhonePresetWithNoWallpaper implements ActionListener {	
 	private static final Font labelFont = new Font("Raleway", Font.PLAIN, 14);
 	private JTextField nameTextField = new JTextField();
 	private JTextField numTextField = new JTextField();
+	private String imageUrl = "";
 
 	private JButton homeBtn = new JButton("");
+	private JButton contactImage = new JButton();
 
-	JButton btnDiscard = new JButton("Discard");
-	JButton btnSave = new JButton("Save");
+
+	private JButton btnDiscard = new JButton("Discard");
+	private JButton btnSave = new JButton("Save");
 
 	public AddContact(String param) {
 		JLabel headText = new JLabel("New Contact");
@@ -24,12 +29,20 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		add(headText);
 		
 		ImageIcon imgContactImage = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
-		JButton contactImage = new JButton(imgContactImage);
+		contactImage.setIcon(imgContactImage);
 		contactImage.setBounds(50, 114, 176, 143);
 		contactImage.setAlignmentX(SwingConstants.CENTER);
 		contactImage.setAlignmentY(SwingConstants.CENTER);
 		super.makeButtonTransparent(contactImage, false);
 		contactImage.setFocusable(false);
+
+		// Add Event Listener to image icon
+		contactImage.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				imageUrl = uploadNewImage(contactImage, 120, 120);
+			}
+		});
+
 		add(contactImage);
 		
 		JLabel lblName = new JLabel("Name");
@@ -86,6 +99,35 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 	
 	}
 
+	public String uploadNewImage(JButton label, int w, int h){
+        JFileChooser file = new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg", "png");
+        file.addChoosableFileFilter(filter);
+        setFileChooserFont(file.getComponents());
+
+        int result = file.showSaveDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selectedFile =file.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            label.setIcon(super.resizeSelectedImage(path, w, h));
+            label.setVerticalAlignment(SwingConstants.CENTER);
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			return path;
+
+        }else if(result == JFileChooser.CANCEL_OPTION){
+            JLabel msg = new JLabel("No file selected");
+            msg.setFont(new Font("Raleway", Font.PLAIN, 14));
+            // JOptionPane.showMessageDialog(null, "No file selected");
+			JOptionPane.showMessageDialog(null, msg, "CANCELLED", JOptionPane.WARNING_MESSAGE);
+			
+		}
+		
+		return "";        
+	}
+	
+	// handler for actions
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == btnDiscard){
 			// --go to dial screen
@@ -100,9 +142,9 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 			String name = nameTextField.getText();
 			String phone = numTextField.getText();
 			
-			if(phone != ""){
+			if(!phone.contentEquals("")){
 				MyDatabaseManager db = new MyDatabaseManager();
-				boolean status = db.insertContact(name, phone, "");
+				boolean status = db.insertContact(name, phone, imageUrl);
 
 				if(status == true){
 					// --go to dial screen
@@ -111,7 +153,9 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 					frame.setVisible(true);
 					((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
 				}else{
-					JOptionPane.showMessageDialog(this, String.format("Contact already saved!"));
+					JLabel msg = new JLabel("Contact already saved");
+					msg.setFont(new Font("Raleway", Font.PLAIN, 14));
+					JOptionPane.showMessageDialog(null, msg, "ERROR", JOptionPane.WARNING_MESSAGE);
 				}
 
 			}

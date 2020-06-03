@@ -16,13 +16,15 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 
     private String contactName;
     private String contactNumber;
+    private String contactImage;
     
     // Constructor -->
-    public ContactDetailsPage(String contactName, String contactNumber){ 
+    public ContactDetailsPage(String contactName, String contactNumber, String contactImage){ 
         setLayout(null);
 
         this.contactName = contactName;
         this.contactNumber = contactNumber;
+        this.contactImage = contactImage;
 
         // back Button
         backBtn.setFont(font);
@@ -57,14 +59,24 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 	
 
         // Contacts
-        showContactDetails(contactName, contactNumber);
+        showContactDetails(contactName, contactNumber, contactImage);
 
     }// <-- end Constructor
 
     // Show contacts on screen from param array
-    public void showContactDetails(String name, String number){
+    public void showContactDetails(String name, String number, String image){
         // Load user icon
-        Icon user = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
+
+        Icon user;
+        if(image == null || image.contentEquals("")){
+           user = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
+        }else{
+            try{
+                user = super.resizeSelectedImage(image, 120, 120);
+            }catch(Exception ex){
+                user = new ImageIcon(getClass().getResource("./images/icons/user-m.png"));
+            }
+        }
 
         // Contacts List
         // -- load dial icon
@@ -75,7 +87,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // -- name button
         nameLabel = new JLabel(name, user, JLabel.CENTER);
         nameLabel.setFont(new Font("Raleway", Font.BOLD, 22));
-        nameLabel.setBounds(x, y, w, h);
+        nameLabel.setBounds(x, y-20, w, 200);
         nameLabel.setIconTextGap(10);
         nameLabel.setVerticalTextPosition(JLabel.BOTTOM);
         nameLabel.setHorizontalTextPosition(JLabel.CENTER);
@@ -83,7 +95,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         add(nameLabel);
 
         // -- dial button
-        y = y+h+15;
+        y = y+h+25;
         h = 35;
         dialBtn = new JButton(number, dial);
         dialBtn.setFont(font);
@@ -135,7 +147,9 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
                 frame.setVisible(true);
                 ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
             }else{
-                JOptionPane.showMessageDialog(this, String.format("You cannot delete this contact!"));
+                JLabel msg = new JLabel("You cannot delete this contact");
+                msg.setFont(new Font("Raleway", Font.PLAIN, 14));
+                JOptionPane.showMessageDialog(null, msg, "ERROR", JOptionPane.WARNING_MESSAGE);
             }
 
         }
@@ -149,7 +163,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         if (e.getSource() == msgBtn){
             // System.out.println("we'll start messaging "+contactName+" shortly");
             // Go to messages page
-            SendMessage panel = new SendMessage(contactNumber);
+            SendMessage panel = new SendMessage(contactNumber, contactImage);
             NewWindowFrame frame = new NewWindowFrame(panel);
             frame.setVisible(true);
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();

@@ -274,7 +274,7 @@ public class PhoneDial extends PhonePresetWithNoWallpaper implements ActionListe
 			}
 
 			if(btn == "message"){
-				SendMessage panel = new SendMessage(msg);
+				SendMessage panel = new SendMessage(msg, "");
 				NewWindowFrame frame = new NewWindowFrame(panel);
 				frame.setVisible(true);
 				((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();

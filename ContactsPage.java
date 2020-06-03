@@ -131,17 +131,19 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
                     //--show list on phone screen
                     String phone = contacts.getString("phone");
                     String name = ((contacts.getString("name")).contentEquals("")) ? phone : (contacts.getString("name"));
+                    String userImageUrl = contacts.getString("image");
                     Icon image;
     
                     int num = 1 + randomNumbers.nextInt(6);
                     String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
+
     
-                    if(contacts.getString("image") == null){
+                    if(userImageUrl == null){
                         image = new ImageIcon(getClass().getResource(defaultImageUrl));
                     }
                     else{
                         try{
-                            image = new ImageIcon(getClass().getResource(contacts.getString("image")));
+                            image = super.resizeSelectedImage(contacts.getString("image"), 32, 32);
                         }catch(Exception exc){
                             image = new ImageIcon(getClass().getResource(defaultImageUrl));
                         }
@@ -165,7 +167,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
                     contactBtns.get(i).addActionListener(new ActionListener(){
                         public void actionPerformed(ActionEvent e){
                             // Show single contact page
-                            showSingleContactPage(name, phone, e);
+                            showSingleContactPage(name, phone, userImageUrl, e);
                         }
                     });
                     
@@ -271,8 +273,8 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
     }// <-- end keyReleased
   
     // Show single contact page
-    public void showSingleContactPage(String name, String number, ActionEvent e){
-        ContactDetailsPage panel = new ContactDetailsPage(name, number);
+    public void showSingleContactPage(String name, String number, String image, ActionEvent e){
+        ContactDetailsPage panel = new ContactDetailsPage(name, number, image);
         NewWindowFrame frame = new NewWindowFrame(panel);
         frame.setVisible(true);
         ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();

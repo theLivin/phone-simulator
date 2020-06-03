@@ -20,19 +20,34 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 	 * Create the panel.
 	 */
 
-	public SendMessage(String recipient) {
+	public SendMessage(String recipient, String imageUrl) {
 		setAutoscrolls(true);
 
 		int num = 1 + randomNumbers.nextInt(6);
-        String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
+		String defaultImageUrl = "./images/icons/contacts/contacts-"+num+".png";
+		
+		Icon userImage;
+        if(imageUrl == null || imageUrl.contentEquals("")){
+           userImage = new ImageIcon(getClass().getResource(defaultImageUrl));
+        }else{
+            try{
+                userImage = super.resizeSelectedImage(imageUrl, 32, 32);
+            }catch(Exception ex){
+                userImage = new ImageIcon(getClass().getResource(defaultImageUrl));
+            }
+        }
 
 		// Contacts Icon		
 		JLabel lblContactImage = new JLabel("");
-		lblContactImage.setIcon(new ImageIcon(getClass().getResource(defaultImageUrl)));
 		lblContactImage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblContactImage.setBounds(123, 40, 40, 40);
 		lblContactImage.setFocusable(false);
+		
+		lblContactImage.setIcon(userImage);
+		
+		
 		add(lblContactImage);
+
 
 		if(recipient.contentEquals("")){
 			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);

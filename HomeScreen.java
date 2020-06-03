@@ -138,7 +138,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         if( src.getIcon() == messages ){
             // System.out.println("messages");
             // Go to messages page
-            SendMessage panel = new SendMessage("");
+            SendMessage panel = new SendMessage("", "");
             NewWindowFrame frame = new NewWindowFrame(panel);
             frame.setVisible(true);
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();

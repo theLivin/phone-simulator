@@ -64,6 +64,33 @@ public class PhonePresetWithNoWallpaper extends JPanel{
         btn.setBorderPainted(visibleBorder);
     }// <-- end makeButtonTransparent
 
+    // Resize image to preferred width and height
+    public ImageIcon resizeSelectedImage(String iconPath, int width, int height){
+        ImageIcon imgIco = new ImageIcon(iconPath);
+        Image img = imgIco.getImage();
+
+        Image newImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        ImageIcon newImgIco = new ImageIcon(newImg);
+
+        return newImgIco;
+    }
+
+    // change font of file component content
+    public void setFileChooserFont(Component[] comp){
+        for(int x = 0; x < comp.length ; x++){
+            if(comp[x] instanceof Container){
+                setFileChooserFont(((Container)comp[x]).getComponents());
+            }
+            try{
+                if(comp[x] instanceof JList || comp[x] instanceof JTable){
+                    comp[x].setFont(new Font("Raleway", Font.PLAIN, 14));
+                }
+            }catch(Exception ex){
+                // do nothing
+            }
+        }
+    }
+
 
 
 }
