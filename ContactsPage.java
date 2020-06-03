@@ -117,6 +117,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
 
         // Contacts List
         int i = 0;
+        contactBtns.clear();
 
         // show contacts if phonebook is not empty
         try{
@@ -143,7 +144,7 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
                     }
                     else{
                         try{
-                            image = super.resizeSelectedImage(contacts.getString("image"), 32, 32);
+                            image = super.resizeSelectedImage(userImageUrl, 32, 32);
                         }catch(Exception exc){
                             image = new ImageIcon(getClass().getResource(defaultImageUrl));
                         }
@@ -234,18 +235,8 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
         if( e.getSource() == searchBtn ){
             // Search for contact whose details matches the text in the search bar
             searchString = searchBar.getText();
-            System.out.println("searching for: " + searchString);
-            if(!searchString.contentEquals("")){
-                contacts = db.findContactByNameOrPhone(searchString);
-                contactListPanel.removeAll();
-                contactListPanel.revalidate();
-                showContacts();
-
-                // Change size of scroll panel
-                int count = db.countNumOfRowsFrom(db.findContactByNameOrPhone(searchString));
-                contactListPanel.setPreferredSize(new Dimension(600,(count*45+1) ));
-                contactListPanel.repaint(); // show changes made
-            }
+            // System.out.println("searching for: " + searchString);
+            makeSearch();
         }
 
         if( e.getSource() == addBtn ){
@@ -256,12 +247,28 @@ public class ContactsPage extends PhonePresetWithNoWallpaper implements ActionLi
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
     }// <-- end actionPerformed
+
+    // Search for contact in database
+    public void makeSearch(){
+        if(!searchString.contentEquals("")){
+            contacts = db.findContactByNameOrPhone(searchString);
+            contactListPanel.removeAll();
+            contactListPanel.revalidate();
+            showContacts();
+
+            // Change size of scroll panel
+            int count = db.countNumOfRowsFrom(db.findContactByNameOrPhone(searchString));
+            contactListPanel.setPreferredSize(new Dimension(600,(count*45+1) ));
+            contactListPanel.repaint(); // show changes made
+        }
+    }
         
     // Handle KeyListener events
     public void keyTyped(KeyEvent e){
-        // char c = e.getKeyChar();
-        // searchString = searchBar.getText() + c;
+        char c = e.getKeyChar();
+        searchString = searchBar.getText() + c;
         // System.out.println(searchString);
+        makeSearch();
     }// <-- end keyTyped
 
     public void keyPressed(KeyEvent e){

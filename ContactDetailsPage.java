@@ -87,11 +87,11 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         // -- name button
         nameLabel = new JLabel(name, user, JLabel.CENTER);
         nameLabel.setFont(new Font("Raleway", Font.BOLD, 22));
-        nameLabel.setBounds(x, y-20, w, 200);
+        nameLabel.setBounds(x, y-30, w, 200);
         nameLabel.setIconTextGap(10);
         nameLabel.setVerticalTextPosition(JLabel.BOTTOM);
         nameLabel.setHorizontalTextPosition(JLabel.CENTER);
-        nameLabel.setForeground(Color.DARK_GRAY);
+        nameLabel.setForeground(Color.GRAY);
         add(nameLabel);
 
         // -- dial button

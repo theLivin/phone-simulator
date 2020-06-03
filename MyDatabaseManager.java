@@ -232,11 +232,15 @@ public class MyDatabaseManager{
 
         try{
             String sql;
+            try{
+                int num = Integer.parseInt(arg);
+                sql = "SELECT * FROM phonebook WHERE phone LIKE ?";
+            }catch(Exception excep){
+                sql = "SELECT * FROM phonebook WHERE name LIKE ?";
+            }
 
-            sql = "SELECT * FROM phonebook WHERE phone=? OR name=?";
             prepStmnt = conn.prepareStatement(sql);
-            prepStmnt.setString(1, arg);
-            prepStmnt.setString(2, arg);
+            prepStmnt.setString(1, "%"+arg+"%");
             return prepStmnt.executeQuery();
 
         }catch(SQLException ex){
