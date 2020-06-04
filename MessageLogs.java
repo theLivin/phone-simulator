@@ -31,6 +31,18 @@ public class MessageLogs extends PhonePresetWithNoWallpaper implements ActionLis
     public MessageLogs(){
         setLayout(null);
 
+        
+		// Home Bar
+		Icon homebar = new ImageIcon(getClass().getResource("./images/homebar.png"));
+		homeBtn.setIcon(homebar);
+        homeBtn.setForeground(Color.BLUE);
+        homeBtn.setBounds(75, 532, 131, 10);
+        homeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		super.makeButtonTransparent(homeBtn, false);
+		homeBtn.setFocusable(false);
+        add(homeBtn);
+		homeBtn.addActionListener(this);
+
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("E, MMM d yyyy");
         LocalDateTime now = LocalDateTime.now();
         today = dateFormat.format(now);
