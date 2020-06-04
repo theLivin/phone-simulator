@@ -41,7 +41,6 @@ public class MessageLogs extends PhonePresetWithNoWallpaper implements ActionLis
 		super.makeButtonTransparent(homeBtn, false);
 		homeBtn.setFocusable(false);
         add(homeBtn);
-		homeBtn.addActionListener(this);
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("E, MMM d yyyy");
         LocalDateTime now = LocalDateTime.now();
