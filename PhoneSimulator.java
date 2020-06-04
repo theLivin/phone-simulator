@@ -15,6 +15,7 @@ public class PhoneSimulator{
 
         JFrame application = new JFrame("eyePhone");
         AnimationScreen loadAnimation = new AnimationScreen();
+        // HomeScreen loadAnimation = new HomeScreen();
 
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(293, 596);

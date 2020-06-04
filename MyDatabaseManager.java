@@ -72,12 +72,12 @@ public class MyDatabaseManager{
             // check if table is does not exist and create it if it does not -- message
             stmnt3 = conn.createStatement();
             sql = "CREATE TABLE IF NOT EXISTS message(" +
-                "id INTEGER," +
+                "msg_id INTEGER," +
                 "body VARCHAR(255) NOT NULL," +
                 "date VARCHAR(255) NOT NULL," +
                 "time VARCHAR(10)," +
                 "receiver VARCHAR(10)," +
-                "PRIMARY KEY(id)" +
+                "PRIMARY KEY(msg_id)" +
             ")";
             stmnt3.execute(sql);
             // System.out.println("message table created or already exists");
@@ -221,7 +221,7 @@ public class MyDatabaseManager{
         }
     }
 
-    // Search for contact by name or phone
+    // search for contact by name or phone
     public ResultSet findContactByNameOrPhone(String arg){
         PreparedStatement prepStmnt = null;
 
@@ -252,7 +252,7 @@ public class MyDatabaseManager{
         }
     }
 
-    // Upadate contact image
+    // upadate contact image
     public void updateContactImage(String phone, String image){
         PreparedStatement prepStmnt = null;
 
@@ -279,7 +279,7 @@ public class MyDatabaseManager{
     }
     
 
-    // Delete Contact
+    // delete Contact
     public boolean deleteContact(String phone){
         PreparedStatement prepStmnt = null;
 
@@ -419,7 +419,7 @@ public class MyDatabaseManager{
         }
     }
 
-    // Count number of rows returned from result set
+    // count number of rows returned from result set
     public int countNumOfRowsFrom(ResultSet rs){
         // connect if not connected
         if(conn == null){
@@ -444,7 +444,7 @@ public class MyDatabaseManager{
         }
     }
 
-    // Clear call log
+    // clear call log
     public boolean clearCallLog(){
         PreparedStatement prepStmnt = null;
 
@@ -457,6 +457,170 @@ public class MyDatabaseManager{
             String sql;
 
             sql = "DELETE FROM call_log";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.execute();
+
+            return true;
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return false;
+            
+        }finally{
+            // release resources
+            try{
+                if(prepStmnt != null){
+                    prepStmnt.close();
+                }
+            }catch(Exception ex){
+
+            }
+        }
+    }
+
+    // Messages
+    // add message to database
+    public void saveMessage(String msg, String date, String time, String receiver) {
+        PreparedStatement prepStmnt = null;
+     	if(conn == null) {
+     		connect();
+     	}
+     	
+     	String sql="INSERT INTO message(body,date,time,receiver) VALUES(?,?,?,?)";
+     	try {
+ 			prepStmnt = conn.prepareStatement(sql);
+ 			prepStmnt.setString(1, msg);
+ 			prepStmnt.setString(2, date);
+ 			prepStmnt.setString(3, time);
+ 			prepStmnt.setString(4, receiver);
+ 			
+ 			prepStmnt.execute();
+ 			
+ 			
+ 			System.out.println("Values inserted into database!");
+ 			
+ 		} catch (SQLException e) {
+ 			// TODO Auto-generated catch block
+ 			e.printStackTrace();
+ 		}
+     	
+    }
+
+    // get contact phone number using the name -- returns first contact with such name  
+    public String validateContact(String name){
+        // find contact with phone number from phonebook table and return name
+        PreparedStatement prepStmnt = null;
+        ResultSet res = null;
+    
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "SELECT phone FROM phonebook WHERE name=? LIMIT 1";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1,name);
+            res = prepStmnt.executeQuery();
+
+            String phone = res.getString("phone");
+
+            if(!name.contentEquals(""))
+                return phone;
+            else
+            return "";
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return "";
+        }
+    }
+    
+
+    // get all messages sent by contact
+    public ResultSet returnAllMessagesToThis(String contact){
+        // find contact with phone number from phonebook table and return name
+        PreparedStatement prepStmnt = null;
+        ResultSet res = null;
+    
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "SELECT body FROM message LEFT JOIN phonebook ON message.receiver=phonebook.phone WHERE receiver=?";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1,contact);
+            res = prepStmnt.executeQuery();
+
+            return res;
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return res=null;
+        }
+    
+    }
+
+    // get all messages in the messages table
+    public ResultSet getAllMessages(){
+        // find contact with phone number from phonebook table and return name
+        PreparedStatement prepStmnt = null;
+        ResultSet res = null;
+    
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+            sql = "SELECT DISTINCT * FROM message LEFT JOIN phonebook ON message.receiver=phonebook.phone ORDER BY msg_id DESC";
+            prepStmnt = conn.prepareStatement(sql);
+            res = prepStmnt.executeQuery();
+
+            return res;
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+            return res=null;
+        }
+    
+    }
+
+    // clear call log
+    public boolean clearMessageLog(){
+        PreparedStatement prepStmnt = null;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+
+            sql = "DELETE FROM message";
             prepStmnt = conn.prepareStatement(sql);
             prepStmnt.execute();
 

@@ -148,6 +148,10 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
         if(e.getSource() == homeBtn){
+            if(!newImageUrl.contentEquals("")){
+                MyDatabaseManager db = new MyDatabaseManager();
+                db.updateContactImage(contactNumber, newImageUrl);
+            }
             // -- go to home screen
             HomeScreen panel = new HomeScreen();
             NewWindowFrame frame = new NewWindowFrame(panel);
@@ -171,6 +175,10 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
 
         }
         if (e.getSource() == dialBtn){
+            if(!newImageUrl.contentEquals("")){
+                MyDatabaseManager db = new MyDatabaseManager();
+                db.updateContactImage(contactNumber, newImageUrl);
+            }
             // System.out.println("dialing "+contactName+"...");
             PhoneCall panel = new PhoneCall(contactNumber);
             NewWindowFrame frame = new NewWindowFrame(panel);
@@ -178,6 +186,10 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
         if (e.getSource() == msgBtn){
+            if(!newImageUrl.contentEquals("")){
+                MyDatabaseManager db = new MyDatabaseManager();
+                db.updateContactImage(contactNumber, newImageUrl);
+            }
             // System.out.println("we'll start messaging "+contactName+" shortly");
             // Go to messages page
             SendMessage panel = new SendMessage(contactNumber, contactImage);
