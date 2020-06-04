@@ -240,7 +240,7 @@ public class MyDatabaseManager{
             }
 
             prepStmnt = conn.prepareStatement(sql);
-            prepStmnt.setString(1, "%"+arg+"%");
+            prepStmnt.setString(1, arg+"%");
             return prepStmnt.executeQuery();
 
         }catch(SQLException ex){
@@ -251,6 +251,33 @@ public class MyDatabaseManager{
             return null;
         }
     }
+
+    // Upadate contact image
+    public void updateContactImage(String phone, String image){
+        PreparedStatement prepStmnt = null;
+
+        // connect if not connected
+        if(conn == null){
+            connect();
+        }
+
+        try{
+            String sql;
+                        
+            sql = "UPDATE phonebook SET image=? WHERE phone=?";
+            prepStmnt = conn.prepareStatement(sql);
+            prepStmnt.setString(1, image);
+            prepStmnt.setString(2, phone);
+            prepStmnt.execute();
+
+        }catch(SQLException ex){
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+
+        }
+    }
+    
 
     // Delete Contact
     public boolean deleteContact(String phone){

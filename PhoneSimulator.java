@@ -14,14 +14,14 @@ public class PhoneSimulator{
         }
 
         JFrame application = new JFrame("eyePhone");
-        HomeScreen home = new HomeScreen();
+        AnimationScreen loadAnimation = new AnimationScreen();
 
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(293, 596);
         application.setVisible(true);
         application.setResizable(false);
         application.setLocationRelativeTo(null);
-        application.add(home);
+        application.add(loadAnimation);
         
     }
 }

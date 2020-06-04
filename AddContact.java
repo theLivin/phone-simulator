@@ -36,7 +36,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 		super.makeButtonTransparent(contactImage, false);
 		contactImage.setFocusable(false);
 
-		// Add Event Listener to image icon
+		// Add Event Listener to image button
 		contactImage.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				imageUrl = uploadNewImage(contactImage, 120, 120);
@@ -99,6 +99,7 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 	
 	}
 
+	//Upload image
 	public String uploadNewImage(JButton label, int w, int h){
         JFileChooser file = new JFileChooser();
         file.setCurrentDirectory(new File(System.getProperty("user.home")));
@@ -117,9 +118,8 @@ public class AddContact extends PhonePresetWithNoWallpaper implements ActionList
 			return path;
 
         }else if(result == JFileChooser.CANCEL_OPTION){
-            JLabel msg = new JLabel("No file selected");
+            JLabel msg = new JLabel("No image was selected");
             msg.setFont(new Font("Raleway", Font.PLAIN, 14));
-            // JOptionPane.showMessageDialog(null, "No file selected");
 			JOptionPane.showMessageDialog(null, msg, "CANCELLED", JOptionPane.WARNING_MESSAGE);
 			
 		}

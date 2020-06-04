@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements ActionListener{
@@ -17,6 +20,7 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
     private String contactName;
     private String contactNumber;
     private String contactImage;
+    private String newImageUrl = "";
     
     // Constructor -->
     public ContactDetailsPage(String contactName, String contactNumber, String contactImage){ 
@@ -92,6 +96,13 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
         nameLabel.setVerticalTextPosition(JLabel.BOTTOM);
         nameLabel.setHorizontalTextPosition(JLabel.CENTER);
         nameLabel.setForeground(Color.GRAY);
+
+        // Add Event Listener to image icon
+		nameLabel.addMouseListener(new MouseAdapter(){
+			public void mouseClicked(MouseEvent e){
+				newImageUrl = uploadNewImage(nameLabel, 120, 120);
+			}
+		});
         add(nameLabel);
 
         // -- dial button
@@ -124,6 +135,12 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
     // Handle ActionListener events
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == backBtn){
+            // Update phonebook table with new image if contact changed it
+            if(!newImageUrl.contentEquals("")){
+                MyDatabaseManager db = new MyDatabaseManager();
+                db.updateContactImage(contactNumber, newImageUrl);
+            }
+
             // -- go back to contacts page
             ContactsPage panel = new ContactsPage();
             NewWindowFrame frame = new NewWindowFrame(panel);
@@ -169,5 +186,33 @@ public class ContactDetailsPage extends PhonePresetWithNoWallpaper implements Ac
             ((JFrame) SwingUtilities.getWindowAncestor(this)).dispose();
         }
     }// <-- end actionPerformed
+
+    //Upload image
+	public String uploadNewImage(JLabel label, int w, int h){
+        JFileChooser file = new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Images", "jpg", "png");
+        file.addChoosableFileFilter(filter);
+        setFileChooserFont(file.getComponents());
+
+        int result = file.showSaveDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selectedFile =file.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            label.setIcon(super.resizeSelectedImage(path, w, h));
+            label.setVerticalAlignment(SwingConstants.CENTER);
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+			
+			return path;
+
+        }else if(result == JFileChooser.CANCEL_OPTION){
+            JLabel msg = new JLabel("No image was selected");
+            msg.setFont(new Font("Raleway", Font.PLAIN, 14));
+			JOptionPane.showMessageDialog(null, msg, "CANCELLED", JOptionPane.WARNING_MESSAGE);
+			
+		}
+		
+		return "";        
+	}
 
 }

@@ -58,7 +58,7 @@ public class PhoneCall extends PhonePresetWithNoWallpaper {
 		int w = 79,
 			h = 75, 
 			x = 25, 
-			y1 = 190, 
+			y1 = 200, 
 			y2 = y1 + h;
 
 		for(int i=0; i<extraLabel.length; i++){
