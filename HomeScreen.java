@@ -127,7 +127,7 @@ public class HomeScreen extends PhonePreset implements ActionListener{
         }
 
         if( src.getIcon() == calendar ){
-            System.out.println("calendar");
+            // System.out.println("calendar");
             // Go to calendar page
             CalendarPanel panel = new CalendarPanel();
             NewWindowFrame frame = new NewWindowFrame(panel);

@@ -12,7 +12,7 @@ public class AnimationScreen extends JPanel{
     private BufferedImage iphone;
     private Icon eyePhoneGIF;
 
-    public AnimationScreen(){
+    public AnimationScreen(boolean powerOn){
         setLayout(new BorderLayout());
         setBackground(Color.BLACK);
         // Load iphone image
@@ -28,11 +28,18 @@ public class AnimationScreen extends JPanel{
 
         TimerTask changeBackgroundColor = new TimerTask(){
             public void run(){
-                openHomeScreen();
+                if(powerOn){
+                    // show home screen
+                    openHomeScreen();
+                }
+                else{
+                    // turn phone off
+                    System.exit(0);
+                }
             }
         };
 
-        new Timer().schedule(changeBackgroundColor, 10000);
+        new Timer().schedule(changeBackgroundColor, 18000);
 
     }
 

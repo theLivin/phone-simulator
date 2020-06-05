@@ -1,5 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
+
 import java.io.File;
 
 public class PhoneSimulator{
@@ -14,8 +15,7 @@ public class PhoneSimulator{
         }
 
         JFrame application = new JFrame("eyePhone");
-        AnimationScreen loadAnimation = new AnimationScreen();
-        // HomeScreen loadAnimation = new HomeScreen();
+        AnimationScreen loadAnimation = new AnimationScreen(true);
 
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(293, 596);
@@ -25,4 +25,5 @@ public class PhoneSimulator{
         application.add(loadAnimation);
         
     }
+
 }
