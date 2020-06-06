@@ -5,6 +5,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.security.SecureRandom;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -87,7 +88,15 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 		}else {
 			// Check if contact is saved and display name instead of number
 			MyDatabaseManager db = new MyDatabaseManager();
-			String name = db.findContact(recipient);
+			ResultSet contact = db.findContactByNameOrPhone(recipient);
+			String name = "";
+			String image = "";
+			try{
+				name = contact.getString("name");
+				image = contact.getString("image");
+			}catch(SQLException ex){
+				System.out.println(ex.getMessage());
+			}
 			String param = (name == null || (name.contentEquals(""))) ? recipient : name;
 			JLabel lblContactName = new JLabel(param);
 			lblContactName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -96,6 +105,10 @@ public class SendMessage extends PhonePresetWithNoWallpaper implements ActionLis
 			lblContactName.setBounds(43, 80, 200, 18);
 			lblContactName.setFocusable(false);
 			add(lblContactName);
+			if(image == null || (image.contentEquals(""))){
+			}else{
+				lblContactImage.setIcon(super.resizeSelectedImage(image, 32, 32));
+			}
 		}
 
 		if(recipient.contentEquals("")){
