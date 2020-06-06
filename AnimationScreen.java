@@ -39,7 +39,7 @@ public class AnimationScreen extends JPanel{
             }
         };
 
-        new Timer().schedule(changeBackgroundColor, 18000);
+        new Timer().schedule(changeBackgroundColor, 13000);
 
     }
 
