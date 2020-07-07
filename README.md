@@ -21,3 +21,11 @@ The call interface should display the contact’s name, phone number, profile pi
 + When the end call button is pressed, the call log interface should be displayed. 
 
 **Hint: Use SQLite for Contacts, Call logs, etc.**
+
+
+## How To Run
++ Windows
+Execute *run-phone-simulator.bat*
+
++ Linux
+Execute *run-phone-simulator.sh*
