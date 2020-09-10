@@ -24,8 +24,6 @@ The call interface should display the contact’s name, phone number, profile pi
 
 
 ## How To Run
-+ Windows
-Execute *run-phone-simulator.bat*
+**Windows**: Execute *run-phone-simulator.bat*
 
-+ Linux
-Execute *run-phone-simulator.sh*
+**Linux**: Execute *run-phone-simulator.sh*
